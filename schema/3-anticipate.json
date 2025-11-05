@@ -1,0 +1,88 @@
+{
+    "$id": "https://tennistcg.io/schema/3-anticipate.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 3 — Anticipate",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "incomingSQ",
+                "calculatedSQ",
+                "effectiveSQ"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "anticipate"
+                },
+                "incomingSQ": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "calculatedSQ": {
+                    "description": "The rule is to use agility and any spent stamina to calculate incomming SQ",
+                    "type": "object",
+                    "properties": {
+                        "agility": {
+                            "type": "integer"
+                        },
+                        "staminaSpent": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "value": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "agility",
+                        "staminaSpent",
+                        "value"
+                    ]
+                },
+                "effectiveSQ": {
+                    "description": "The effective SQ the responde player will face",
+                    "type": "object",
+                    "properties": {
+                        "atTheNetThreshold10Rule": {
+                            "description": "Wether the responder is at the net and we had to apply the threshold 10 rule: If incoming SQ < 10: New SQ = Calculated SQ − (10 − SQ); If incoming SQ = 10: New SQ = 10 (no change); If incoming SQ > 10: New SQ = Calculated SQ + (Calculated SQ − 10)",
+                            "type": "boolean"
+                        },
+                        "value": {
+                            "description": "Calculated SQ or New SQ after threshold 10 rule if responder at the net",
+                            "type": "integer",
+                            "minimum": 0                            
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}

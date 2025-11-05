@@ -1,0 +1,28 @@
+{
+    "$id": "https://tennistcg.io/schema/definitions.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Definitions JSONSchema",
+    "type": "object",
+    "properties": {
+        "1d6": {
+            "type": "integer",
+            "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 6
+            },
+            "minItems": 1,
+            "maxItems": 1
+        },
+        "2d6": {
+            "type": "array",
+            "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 6
+            },
+            "minItems": 2,
+            "maxItems": 2
+        }        
+    }
+}

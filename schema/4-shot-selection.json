@@ -1,0 +1,113 @@
+{
+    "$id": "https://tennistcg.io/schema/4-shot-selection.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 4 — Shot Selection",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "hitterId",
+                "shotName",
+                "prerequisitesMet",
+                "sideUsed",
+                "skillBonus",
+                "spSpent",
+                "staminaSpent",
+                "notes"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "shot-selection"
+                },
+                "shotCard": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "cost": {
+                            "type": "object",
+                            "properties": {
+                                "spSpent": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                },
+                                "staminaSpent": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                }                        
+                            }
+                        },
+                        "effects": {
+                            "type": "object",
+                            "properties": {
+                                "serve": {
+                                    "type": "integer"
+                                },
+                                "forehand": {
+                                    "type": "integer"
+                                },
+                                "backhand": {
+                                    "type": "integer"
+                                },
+                                "agility": {
+                                    "type": "integer"
+                                },
+                                "stamina": {
+                                    "type": "integer"
+                                },
+                                "replenishStamina": {
+                                    "type": "boolean"
+                                },
+                                "sp": {
+                                    "type": "integer"
+                                },
+                                "replenishSp": {
+                                    "type": "boolean"
+                                },
+                                "playerPressure": {
+                                    "type": "integer"
+                                },                                
+                                "oponentPressure": {
+                                    "type": "integer"
+                                },
+                                "playerAdrenaline": {
+                                    "type": "integer"
+                                },
+                                "oponentAdrenaline": {
+                                    "type": "integer"
+                                }                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

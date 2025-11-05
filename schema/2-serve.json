@@ -1,7 +1,7 @@
 {
-    "$id": "https://tennistcg.io/schema/ph1-serve.json",
+    "$id": "https://tennistcg.io/schema/2-serve.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Phase 1 — Serve",
+    "title": "Phase 2 — Serve",
     "type": "object",
     "required": [
         "context",
@@ -32,12 +32,10 @@
             "required": [
                 "type",
                 "firstServe",
-                "baseServeScore",
-                "bonuses",
-                "mentalAdjustment",
-                "finalServeScore",
+                "score",
                 "outcome",
-                "sq"
+                "sq",
+                "playerMovement"
             ],
             "properties": {
                 "type": {
@@ -47,19 +45,12 @@
                 "firstServe": {
                     "type": "object",
                     "required": [
-                        "roll",
+                        "2d6",
                         "valid"
                     ],
                     "properties": {
-                        "roll": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 6
-                            },
-                            "minItems": 2,
-                            "maxItems": 2
+                        "2d6": {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/2d6"                            
                         },
                         "valid": {
                             "type": "boolean"
@@ -69,46 +60,71 @@
                 "secondServe": {
                     "type": "object",
                     "required": [
-                        "roll"
+                        "2d6"
                     ],
                     "properties": {
-                        "roll": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 6
-                            },
-                            "minItems": 2,
-                            "maxItems": 2
+                        "2d6": {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/2d6"                            
                         }
                     }
                 },
-                "baseServeScore": {
-                    "type": "integer"
-                },
-                "bonuses": {
+                "score": {
                     "type": "object",
-                    "required": [
-                        "serveSkill",
-                        "cardBonuses"
-                    ],
-                    "properties": {
-                        "serveSkill": {
+                    "properties": {                        
+                        "base": {
+                            "description": "The base serve score after a first or second serve before any adjustements",
                             "type": "integer"
                         },
-                        "cardBonuses": {
+                        "serve": {
+                            "description": "The base serve skill",
                             "type": "integer"
+                        },                        
+                        "bonus": {
+                            "description": "Bonuses are added to Serve SQ from effects originating from equipments and shot or moment cards",
+                            "type": "object",
+                            "properties": {
+                                "total": {
+                                    "type": "number"
+                                },
+                                "effects": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "https://tennistcg.io/schema/state-effects.json"
+                                    }
+                                }
+                            },
+                            "required": ["total"]
+                        },
+                        "mentalAdjustment": {
+                            "description": "Mental adjustement are applied after any bonuses",
+                            "type": "integer"
+                        },
+                        "finalScore": {
+                            "description": "The final serve score",
+                            "type": "object",
+                            "properties": {
+                                "secondServeModule12Rule": {
+                                    "description": "In second serves the second serve module 12 rule must be applied: Mod (12 − (Serve Total − 12)).",
+                                    "type":"boolean"
+                                },
+                                "value": {
+                                    "description": "Final calculated score value after summing base serve with serve skill, bonuses, mental adjustement and applying the second serve module 12 rule, when a second serve",
+                                    "type":"number"
+                                }
+                            },
+                            "required": ["secondServeModule12Rule", "value"]
                         }
-                    }
-                },
-                "mentalAdjustment": {
-                    "type": "integer"
-                },
-                "finalServeScore": {
-                    "type": "integer"
-                },
+                    },
+                    "required": [
+                        "base",
+                        "serve",
+                        "bonuses",
+                        "mentalAdjustement",
+                        "finalScore"
+                    ]
+                }, 
                 "outcome": {
+                    "description": "Should follow the outcome rules: Serve Total < 6 = Double Fault; Exactly 12 = Ace; 7–11 or > 12 = valid serve.",
                     "type": "string",
                     "enum": [
                         "ace",
@@ -117,8 +133,30 @@
                     ]
                 },
                 "sq": {
-                    "type": "integer",
-                    "minimum": 0
+                    "properties": {
+                        "speedModifier": {
+                            "type": "integer"                            
+                        },
+                        "value": {
+                            "description": "Serve SQ score from final calculated score and adding the speed modifier",
+                            "type": "integer",
+                            "minimum": 0                            
+                        }
+                    }
+                },
+                "playerMovement": {
+                    "description": "The player can decide to approach the net, move back to the baseline or stay where they are",
+                    "type":"object",
+                    "properties": {
+                        "decision": {
+                            "type": "string",
+                            "enum": ["approachTheNet", "backToTheBaseline", "stay"]
+                        },
+                        "staminaSpent": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": ["decision", "cost"]
                 }
             }
         }

@@ -1,5 +1,5 @@
 {
-    "$id": "https://tennistcg.io/schema/ph0-setup.json",
+    "$id": "https://tennistcg.io/schema/0-start-match.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "PH0 — Setup",
     "type": "object",
