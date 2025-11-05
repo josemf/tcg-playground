@@ -1,0 +1,32 @@
+{
+  "$id": "https://tennistcg.io/schema/ph5b-mental.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Phase 5.2 — Apply Mental Toughness",
+  "type": "object",
+  "required": ["$prev", "$curr", "$next", "context", "players", "phase"],
+  "properties": {
+    "$prev": { "type": "string", "format": "uri", "const": "https://tennistcg.io/schema/ph5a-momentum.json" },
+    "$curr": { "type": "string", "format": "uri", "const": "https://tennistcg.io/schema/ph5b-mental.json" },
+    "$next": { "type": "string", "format": "uri", "const": "https://tennistcg.io/schema/ph6a-outcome.json" },
+    "context": { "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/context" },
+    "players": { "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/players" },
+    "phase": {
+      "type": "object",
+      "required": ["id", "mental"],
+      "properties": {
+        "id": { "type": "string", "const": "ph5b-mental" },
+        "mental": {
+          "type": "object",
+          "required": ["hitterId", "rsqBefore", "adjustment", "finalRSQ", "mentalAfter"],
+          "properties": {
+            "hitterId": { "type": "string" },
+            "rsqBefore": { "type": "integer" },
+            "adjustment": { "type": "integer" },
+            "finalRSQ": { "type": "integer" },
+            "mentalAfter": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    }
+  }
+}

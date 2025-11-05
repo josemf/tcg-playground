@@ -1,0 +1,69 @@
+{
+    "$id": "https://tennistcg.io/schema/1b-start-of-point.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "PH1 — Start of Point acknowledge",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        }
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "cardCycle"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "start-point"
+                },
+                "cardCycle": {
+                    "type": "object",
+                    "required": [
+                        "cycled",
+                        "discarded",
+                        "drawn"
+                    ],
+                    "properties": {
+                        "cycled": {
+                            "type": "boolean"
+                        },
+                        "discarded": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "drawn": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    }
+                }                                   
+            }
+        }
+    }
+}

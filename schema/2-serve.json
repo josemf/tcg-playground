@@ -1,0 +1,126 @@
+{
+    "$id": "https://tennistcg.io/schema/ph1-serve.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 1 — Serve",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "firstServe",
+                "baseServeScore",
+                "bonuses",
+                "mentalAdjustment",
+                "finalServeScore",
+                "outcome",
+                "sq"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "serve"
+                },
+                "firstServe": {
+                    "type": "object",
+                    "required": [
+                        "roll",
+                        "valid"
+                    ],
+                    "properties": {
+                        "roll": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 6
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
+                        },
+                        "valid": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "secondServe": {
+                    "type": "object",
+                    "required": [
+                        "roll"
+                    ],
+                    "properties": {
+                        "roll": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 6
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
+                        }
+                    }
+                },
+                "baseServeScore": {
+                    "type": "integer"
+                },
+                "bonuses": {
+                    "type": "object",
+                    "required": [
+                        "serveSkill",
+                        "cardBonuses"
+                    ],
+                    "properties": {
+                        "serveSkill": {
+                            "type": "integer"
+                        },
+                        "cardBonuses": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "mentalAdjustment": {
+                    "type": "integer"
+                },
+                "finalServeScore": {
+                    "type": "integer"
+                },
+                "outcome": {
+                    "type": "string",
+                    "enum": [
+                        "ace",
+                        "doubleFault",
+                        "valid"
+                    ]
+                },
+                "sq": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        }
+    }
+}

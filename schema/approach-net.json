@@ -1,0 +1,32 @@
+{
+  "$id": "https://tennistcg.io/schema/ph6b-approach-net.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Phase 6.2 — Approach the Net",
+  "type": "object",
+  "required": ["$prev", "$curr", "$next", "context", "players", "phase"],
+  "properties": {
+    "$prev": { "type": "string", "format": "uri", "const": "https://tennistcg.io/schema/ph6a-outcome.json" },
+    "$curr": { "type": "string", "format": "uri", "const": "https://tennistcg.io/schema/ph6b-approach-net.json" },
+    "$next": { "type": "string", "format": "uri", "enum": ["https://tennistcg.io/schema/ph2-anticipate.json", "https://tennistcg.io/schema/ph1-serve.json"] },
+    "context": { "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/context" },
+    "players": { "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/players" },
+    "phase": {
+      "type": "object",
+      "required": ["id", "approachNet"],
+      "properties": {
+        "id": { "type": "string", "const": "ph6b-approach-net" },
+        "approachNet": {
+          "type": "object",
+          "required": ["hitterId", "declare", "staminaSpent", "newPosition", "rallyContinues"],
+          "properties": {
+            "hitterId": { "type": "string" },
+            "declare": { "type": "boolean" },
+            "staminaSpent": { "type": "integer", "minimum": 0 },
+            "newPosition": { "type": "string", "enum": ["Baseline", "Net"] },
+            "rallyContinues": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}

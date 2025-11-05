@@ -1,0 +1,169 @@
+{
+  "$id": "https://tennistcg.io/schema/ph4b3-direction-resolve.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Phase 4.2.3 — Direction Resolve (Roll + Apply)",
+  "type": "object",
+  "required": [
+    "$prev",
+    "$curr",
+    "$next",
+    "context",
+    "players",
+    "phase"
+  ],
+  "properties": {
+    "$prev": {
+      "type": "string",
+      "format": "uri",
+      "enum": [
+        "https://tennistcg.io/schema/ph4b2-direction-ack.json",
+        "https://tennistcg.io/schema/ph4b1-direction-declare.json"
+      ]
+    },
+    "$curr": {
+      "type": "string",
+      "format": "uri",
+      "const": "https://tennistcg.io/schema/ph4b3-direction-resolve.json"
+    },
+    "$next": {
+      "type": "string",
+      "format": "uri",
+      "const": "https://tennistcg.io/schema/ph5a-momentum.json"
+    },
+    "context": {
+      "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/context"
+    },
+    "players": {
+      "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/players"
+    },
+    "phase": {
+      "type": "object",
+      "required": [
+        "id",
+        "directionResolve"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "ph4b3-direction-resolve"
+        },
+        "directionResolve": {
+          "type": "object",
+          "required": [
+            "hitterId",
+            "rsqBefore",
+            "declare",
+            "directionBefore",
+            "rsqAfter",
+            "adjustment",
+            "newDirection"
+          ],
+          "properties": {
+            "hitterId": {
+              "type": "string"
+            },
+            "rsqBefore": {
+              "type": "integer"
+            },
+            "declare": {
+              "type": "string",
+              "enum": [
+                "keep",
+                "change"
+              ]
+            },
+            "directionBefore": {
+              "type": "string",
+              "enum": [
+                "FH",
+                "BH"
+              ]
+            },
+            "hitterPickRef": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "defenderPickRef": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "roll": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 6
+            },
+            "adjustment": {
+              "type": "integer",
+              "enum": [
+                -2,
+                0,
+                2
+              ]
+            },
+            "rsqAfter": {
+              "type": "integer"
+            },
+            "newDirection": {
+              "type": "string",
+              "enum": [
+                "FH",
+                "BH"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "description": "If keep: no roll, adjustment=0, rsqAfter=rsqBefore, direction unchanged",
+              "if": {
+                "properties": {
+                  "declare": {
+                    "const": "keep"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "hitterPickRef": {
+                    "type": "integer"
+                  },
+                  "defenderPickRef": {
+                    "type": "integer"
+                  },
+                  "roll": {
+                    "const": null
+                  },
+                  "adjustment": {
+                    "const": 0
+                  }
+                }
+              }
+            },
+            {
+              "description": "If change: roll required; adjustment depends on roll matching picks",
+              "if": {
+                "properties": {
+                  "declare": {
+                    "const": "change"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "hitterPickRef",
+                  "defenderPickRef",
+                  "roll"
+                ]
+              }
+            }
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+}

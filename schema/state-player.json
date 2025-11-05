@@ -1,0 +1,105 @@
+{
+  "$id": "https://tennistcg.io/schema/state-player.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Player State Object",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "baseStats": {
+      "type": "object",
+      "properties": {
+        "serve": { "type": "integer" },
+        "forehand": { "type": "integer" },
+        "backhand": { "type": "integer" },
+        "agility": { "type": "integer" },
+        "stamina": { "type": "integer" },
+        "mental": { "type": "integer" },
+        "sp": { "type": "integer" }
+      },
+      "required": ["serve", "forehand", "backhand", "agility", "stamina", "mental", "sp"]
+    },
+    "effectiveStats": {
+      "type": "object",
+      "properties": {
+        "serve": { "type": "integer" },
+        "forehand": { "type": "integer" },
+        "backhand": { "type": "integer" },
+        "agility": { "type": "integer" },
+        "stamina": { "type": "integer" },
+        "sp": { "type": "integer" }
+      },
+      "required": ["serve", "forehand", "backhand", "agility", "stamina", "sp"]
+    },
+    "currentStats": {
+      "type": "object",
+      "properties": {
+        "stamina": { "type": "integer" },
+        "sp": { "type": "integer" }
+      },
+      "required": ["stamina", "sp"]
+    },
+    "modifiers": {
+      "type": "object",
+      "properties": {
+        "pressure": { "type": "integer" },
+        "adrenaline": { "type": "integer" }
+      },
+      "required": ["pressure", "adrenaline"]
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sourceType": { "type": "string", "enum": ["shot", "momentum", "equipment"] },
+          "sourceCard": { "type": "string" },
+          "serve": { "type": "integer" },
+          "forehand": { "type": "integer" },
+          "backhand": { "type": "integer" },
+          "agility": { "type": "integer" },
+          "stamina": { "type": "integer" },
+          "sp": { "type": "integer" },
+          "pressure": { "type": "integer" },
+          "adrenaline": { "type": "integer" },
+          "expiresAfter": { "type": "string", "enum": ["changeover", "endOfGame", "permanent"] }
+        },
+        "required": ["sourceType", "sourceCard", "expiresAfter"]
+      }
+    },
+    "equipment": {
+      "type": "object",
+      "properties": {
+        "Racquet": { "type": ["string", "null"] },
+        "Shoes": { "type": ["string", "null"] },
+        "Wristband": { "type": ["string", "null"] },
+        "Visor": { "type": ["string", "null"] },
+        "Shirt": { "type": ["string", "null"] },
+        "Shorts": { "type": ["string", "null"] },
+        "Headband": { "type": ["string", "null"] },
+        "Socks": { "type": ["string", "null"] },
+        "Overgrip": { "type": ["string", "null"] }
+      },
+      "required": [
+        "Racquet", "Shoes", "Wristband", "Visor",
+        "Shirt", "Shorts", "Headband", "Socks", "Overgrip"
+      ]
+    },
+    "position": { "type": "string", "enum": ["Baseline", "Net"] },
+    "hand": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "deckCount": { "type": "integer" },
+    "discard": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "name", "playerCardId", "baseStats", "effectiveStats",
+    "currentStats", "modifiers", "effects", "equipment", "position", "hand", "deckCount", "discard"
+  ],
+  "additionalProperties": false
+}

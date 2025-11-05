@@ -1,0 +1,131 @@
+{
+  "$id": "https://tennistcg.io/schema/ph4b1-direction-declare.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Phase 4.2.1 — Direction Declare (Hitter)",
+  "type": "object",
+  "required": [
+    "$prev",
+    "$curr",
+    "$next",
+    "context",
+    "players",
+    "phase"
+  ],
+  "properties": {
+    "$prev": {
+      "type": "string",
+      "format": "uri",
+      "const": "https://tennistcg.io/schema/ph4a-build-rsq.json"
+    },
+    "$curr": {
+      "type": "string",
+      "format": "uri",
+      "const": "https://tennistcg.io/schema/ph4b1-direction-declare.json"
+    },
+    "$next": {
+      "type": "string",
+      "format": "uri",
+      "enum": [
+        "https://tennistcg.io/schema/ph4b2-direction-ack.json",
+        "https://tennistcg.io/schema/ph4b3-direction-resolve.json"
+      ]
+    },
+    "context": {
+      "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/context"
+    },
+    "players": {
+      "$ref": "https://tennistcg.io/schema/ph1-serve.json#/properties/players"
+    },
+    "phase": {
+      "type": "object",
+      "required": [
+        "id",
+        "directionDeclare"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "ph4b1-direction-declare"
+        },
+        "directionDeclare": {
+          "type": "object",
+          "required": [
+            "hitterId",
+            "rsqBefore",
+            "declare",
+            "directionBefore"
+          ],
+          "properties": {
+            "hitterId": {
+              "type": "string"
+            },
+            "rsqBefore": {
+              "type": "integer"
+            },
+            "declare": {
+              "type": "string",
+              "enum": [
+                "keep",
+                "change"
+              ]
+            },
+            "directionBefore": {
+              "type": "string",
+              "enum": [
+                "FH",
+                "BH"
+              ]
+            },
+            "hitterPick": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "willFlip": {
+              "type": "boolean",
+              "description": "True if declare=change"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "declare": {
+                    "const": "keep"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "willFlip": {
+                    "const": false
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "declare": {
+                    "const": "change"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "hitterPick"
+                ],
+                "properties": {
+                  "willFlip": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+}

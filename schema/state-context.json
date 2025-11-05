@@ -1,0 +1,126 @@
+{
+    "$id": "https://tennistcg.io/schema/state-context.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Game Context State",
+    "type": "object",
+    "required": [
+        "environment",
+        "lifecycle",
+        "sets",
+        "currentGame",
+        "serverPlayer",
+        "serviceSide",
+        "direction",
+        "tiebreak"
+    ],
+    "properties": {
+        "environment": {
+            "type": "object",
+            "required": [
+                "courtSpeed"
+            ],
+            "properties": {
+                "courtSpeed": {
+                    "type": "integer",
+                    "description": "The court speed modifier"
+                }
+            }
+        },
+        "lifecycle": {
+            "type": "string",
+            "description": "Identifies the application lifecycle state for this context.",
+            "enum": [
+                "Initial",
+                "Serve",
+                "Rally",
+                "StartOfGame"
+            ]
+        },
+        "sets": {
+            "type": "array",
+            "description": "Completed sets, showing number of games won per player in each set.",
+            "items": {
+                "type": "object",
+                "required": [
+                    "playerA",
+                    "playerB"
+                ],
+                "properties": {
+                    "playerA": {
+                        "type": "integer",
+                        "description": "Games won by playerA in this set.",
+                        "minimum": 0
+                    },
+                    "playerB": {
+                        "type": "integer",
+                        "description": "Games won by playerB in this set.",
+                        "minimum": 0
+                    }
+                }
+            }
+        },
+        "currentGame": {
+            "type": "object",
+            "description": "Current point score for both players in the current game (as tennis scores: '0','15','30','40','Ad'; or integer for tiebreak).",
+            "required": [
+                "playerA",
+                "playerB"
+            ],
+            "properties": {
+                "playerA": {
+                    "type": "string"
+                },
+                "playerB": {
+                    "type": "string"
+                }
+            }
+        },
+        "serverPlayer": {
+            "type": "string",
+            "description": "Which player is currently serving this game.",
+            "enum": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "serviceSide": {
+            "type": "string",
+            "description": "Court side for service: 'Deuce' or 'Ad'.",
+            "enum": [
+                "Deuce",
+                "Ad"
+            ]
+        },
+        "direction": {
+            "type": "string",
+            "description": "Hit direction for the next serve/shot—usually 'FH' or 'BH'.",
+            "enum": [
+                "FH",
+                "BH"
+            ]
+        },
+        "tiebreak": {
+            "type": "boolean",
+            "description": "True if the current game is a tiebreak."
+        },
+        "tiebreakPoints": {
+            "type": "object",
+            "description": "(Only if tiebreak:true) Current tiebreak points.",
+            "properties": {
+                "playerA": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "playerB": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        }
+    },
+    "additionalProperties": false
+}

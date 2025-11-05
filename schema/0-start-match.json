@@ -1,0 +1,56 @@
+{
+    "$id": "https://tennistcg.io/schema/ph0-setup.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "PH0 — Setup",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": { "$ref": "https://tennistcg.io/schema/state-player.json" },
+                "pxlayerB": { "$ref": "https://tennistcg.io/schema/state-player.json" }
+            },
+            "required": ["playerA", "playerB"]
+        }
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "player",
+                "toss"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "start-match"
+                },
+                "player": {
+                    "type": "string",
+                    "enum": ["playerA", "playerB"]
+                },
+                "toss": {
+                    "call": {
+                        "type": "string",
+                        "enum": ["heads", "tails"]
+                    },
+                    "toss": {
+                        "type": "string",
+                        "enum": ["heads", "tails"]
+                    },
+                    "decision": {
+                        "type": "string",
+                        "enum": ["serve", "receive"]                        
+                    }                    
+                }
+            }
+        }
+    }
+}

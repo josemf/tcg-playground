@@ -1,0 +1,489 @@
+{
+  "$id": "https://tennistcg.io/schema/ph0-changeover-action.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PH0 — Changeover (Player Action)",
+  "type": "object",
+  "required": [
+    "$prev",
+    "$curr",
+    "$next",
+    "context",
+    "actor",
+    "players",
+    "phase"
+  ],
+  "properties": {
+    "$prev": {
+      "type": "string",
+      "format": "uri",
+      "enum": [
+        "https://tennistcg.io/schema/ph6b-approach-net.json",
+        "https://tennistcg.io/schema/ph6a-outcome.json"
+      ]
+    },
+    "$curr": {
+      "type": "string",
+      "format": "uri",
+      "const": "https://tennistcg.io/schema/ph0-changeover-action.json"
+    },
+    "$next": {
+      "type": "string",
+      "format": "uri",
+      "enum": [
+        "https://tennistcg.io/schema/ph0-changeover-action.json",
+        "https://tennistcg.io/schema/ph0-start-of-point.json",
+        "https://tennistcg.io/schema/ph1-serve.json"
+      ]
+    },
+    "context": {
+      "type": "object",
+      "required": [
+        "set",
+        "gameJustFinished",
+        "nextServer",
+        "changeoverAllowed",
+        "tiebreak",
+        "serviceSideNext",
+        "directionNext"
+      ],
+      "properties": {
+        "set": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "gameJustFinished": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "nextServer": {
+          "type": "string"
+        },
+        "changeoverAllowed": {
+          "type": "boolean"
+        },
+        "tiebreak": {
+          "type": "boolean"
+        },
+        "serviceSideNext": {
+          "type": "string",
+          "enum": [
+            "Deuce",
+            "Ad"
+          ]
+        },
+        "directionNext": {
+          "type": "string",
+          "enum": [
+            "FH",
+            "BH"
+          ]
+        }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "required": [
+        "playerId",
+        "role"
+      ],
+      "properties": {
+        "playerId": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "nextServer",
+            "receiver"
+          ]
+        }
+      }
+    },
+    "players": {
+      "description": "Public states for both players prior to applying this action.",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "position",
+          "stats",
+          "equipmentZone",
+          "handCount",
+          "deckCount",
+          "discardCount"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "Baseline",
+              "Net"
+            ]
+          },
+          "stats": {
+            "type": "object",
+            "required": [
+              "serve",
+              "forehand",
+              "backhand",
+              "agility",
+              "stamina",
+              "mental",
+              "sp"
+            ],
+            "properties": {
+              "serve": {
+                "type": "integer"
+              },
+              "forehand": {
+                "type": "integer"
+              },
+              "backhand": {
+                "type": "integer"
+              },
+              "agility": {
+                "type": "integer"
+              },
+              "stamina": {
+                "type": "object",
+                "required": [
+                  "current",
+                  "max"
+                ],
+                "properties": {
+                  "current": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "max": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              },
+              "mental": {
+                "type": "object",
+                "required": [
+                  "current",
+                  "max"
+                ],
+                "properties": {
+                  "current": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "max": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              },
+              "sp": {
+                "type": "object",
+                "required": [
+                  "available",
+                  "max"
+                ],
+                "properties": {
+                  "available": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "max": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          },
+          "equipmentZone": {
+            "type": "object",
+            "required": [
+              "Racquet",
+              "Shoes",
+              "Wristband",
+              "Visor",
+              "Shirt",
+              "Shorts",
+              "Headband",
+              "Socks",
+              "Overgrip"
+            ],
+            "properties": {
+              "Racquet": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Shoes": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Wristband": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Visor": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Shirt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Shorts": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Headband": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Socks": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Overgrip": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "handCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "deckCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "discardCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "phase": {
+      "type": "object",
+      "required": [
+        "id",
+        "changeover"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "ph0-changeover-action"
+        },
+        "changeover": {
+          "type": "object",
+          "required": [
+            "playerId",
+            "refills",
+            "equipmentActions",
+            "cardFlow",
+            "effectsApplied"
+          ],
+          "properties": {
+            "playerId": {
+              "type": "string"
+            },
+            "refills": {
+              "type": "object",
+              "required": [
+                "staminaToFull",
+                "mentalToFull"
+              ],
+              "properties": {
+                "staminaToFull": {
+                  "type": "boolean"
+                },
+                "mentalToFull": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "equipmentActions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "slot",
+                  "action",
+                  "cardName"
+                ],
+                "properties": {
+                  "slot": {
+                    "type": "string",
+                    "enum": [
+                      "Racquet",
+                      "Shoes",
+                      "Wristband",
+                      "Visor",
+                      "Shirt",
+                      "Shorts",
+                      "Headband",
+                      "Socks",
+                      "Overgrip"
+                    ]
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "equip",
+                      "replace",
+                      "unequip"
+                    ]
+                  },
+                  "cardName": {
+                    "type": "string"
+                  },
+                  "replacedCard": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "swingCost": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "payment": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "spChangeover",
+                          "discard",
+                          "other"
+                        ]
+                      },
+                      "amount": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "details": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "cardFlow": {
+              "description": "Record moving cards from hand to equipment and any draws to maintain hand size 5 (if your rules do so).",
+              "type": "object",
+              "required": [
+                "fromHand",
+                "toEquip",
+                "toDiscard",
+                "drawn",
+                "handAfter"
+              ],
+              "properties": {
+                "fromHand": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "toEquip": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "toDiscard": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "drawn": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "handAfter": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "effectsApplied": {
+              "description": "Calculated or declarative effects of equipment (engine may compute independently).",
+              "type": "object",
+              "properties": {
+                "statDeltas": {
+                  "type": "object",
+                  "properties": {
+                    "serve": {
+                      "type": "integer"
+                    },
+                    "forehand": {
+                      "type": "integer"
+                    },
+                    "backhand": {
+                      "type": "integer"
+                    },
+                    "agility": {
+                      "type": "integer"
+                    },
+                    "maxStamina": {
+                      "type": "integer"
+                    },
+                    "maxMental": {
+                      "type": "integer"
+                    },
+                    "spMax": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "keywords": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
