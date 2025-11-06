@@ -1,0 +1,116 @@
+{
+    "$id": "https://tennistcg.io/schema/5b-execute-shot-direction.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 5 — Execute Shot — change hit direction challenge",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "shotCardOverridesDirectionChange",
+                "directionChangeDeclare",
+                "initialRSQScore"                
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "execute-shot-direction"
+                },
+                "selectedShot": {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/shotCard"
+                },
+                "shotCardOverridesDirectionChange": {
+                    "description": "Shot card can define a direction change. When that happens the direction change protocol is applied.",
+                    "type": "boolean"
+                },
+                "directionChangeDeclare": {
+                    "description": "The player declares a change in shot direction",
+                    "type": "object",
+                    "properties": {
+                        "declare": {
+                            "type": "string",
+                            "enum": [
+                                "keep",
+                                "change"
+                            ]
+                        },
+                        "newHitDirection": {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/hitDirection"
+                        },
+                        "1d6Pick": {
+                            "description": "The hitting player pick for the 1d6 challenge number",
+                            "type": "number",
+                            "minimum": 1,
+                            "maximum": 6
+                        }
+                    },
+
+                    "required": [
+                        "declare"
+                    ],
+                    "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "declare": {
+                                        "const": "change"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "required": [
+                                    "newHitDirection",
+                                    "1d6Pick"
+                                ]
+                            },
+                            "else": {
+                                "not": {
+                                    "anyOf": [
+                                        {
+                                            "required": [
+                                                "newHitDirection"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "1d6Pick"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]                    
+                },
+                "initialRSQScore": {
+                    "type": "integer",
+                    "minimum": 0
+                }                
+            }
+        }
+    }
+}

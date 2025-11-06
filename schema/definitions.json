@@ -2,10 +2,74 @@
     "$id": "https://tennistcg.io/schema/definitions.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Definitions JSONSchema",
+
+    "$defs": {
+        "effects": {
+            "type": "object",
+            "properties": {
+                "rsq": {
+                    "type": "number"
+                },
+                "serve": {
+                    "type": "integer"
+                },
+                "forehand": {
+                    "type": "integer"
+                },
+                "backhand": {
+                    "type": "integer"
+                },
+                "agility": {
+                    "type": "integer"
+                },
+                "stamina": {
+                    "type": "integer"
+                },
+                "replenishStamina": {
+                    "type": "boolean"
+                },
+                "sp": {
+                    "type": "integer"
+                },
+                "replenishSp": {
+                    "type": "boolean"
+                },
+                "playerPressure": {
+                    "type": "integer"
+                },
+                "oponentPressure": {
+                    "type": "integer"
+                },
+                "playerAdrenaline": {
+                    "type": "integer"
+                },
+                "oponentAdrenaline": {
+                    "type": "integer"
+                }
+            }
+        },
+        "courtPosition": {
+            "type": "string",
+            "description": "Player court position, at the 'Baseline' or at the 'Net'.",
+            "enum": [
+                "Baseline",
+                "Net"
+            ]
+        },
+        "hitDirection": {
+            "type": "string",
+            "description": "Hit direction for the next serve/shot—usually 'FH' or 'BH'.",
+            "enum": [
+                "FH",
+                "BH"
+            ]
+        }                            
+    },
+    
     "type": "object",
     "properties": {
         "1d6": {
-            "type": "integer",
+            "type": "array",
             "items": {
                 "type": "integer",
                 "minimum": 1,
@@ -23,6 +87,107 @@
             },
             "minItems": 2,
             "maxItems": 2
-        }        
+        },
+        "shotCard": {
+            "type": "object",
+
+            "required": [
+                "name",
+                "cost",
+                "requirements",
+                "winner",
+                "error",
+                "bonus",
+                "actions"                
+            ],
+            
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "object",
+                    "required": ["spSpent", "staminaSpent"],
+                    "properties": {
+                        "spSpent": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "staminaSpent": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                },
+                "requirements": {
+                    "type": "object",
+                    "properties": {
+                        "playerPosition": {
+                            "$ref": "#/$defs/courtPosition"
+                        },
+                        "direction": {
+                            "$ref": "#/$defs/hitDirection"
+                        },
+                        "lastTurnShotCard": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "winner": {
+                    "type": "object",
+                    "properties": {
+                        "conditions": {
+                            "type": "array",
+                            "items": {
+                                "type": [
+                                    "integer",
+                                    null
+                                ]
+                            }
+                        },
+                        "effects": {
+                            "$ref": "#/$defs/effects"
+                        }
+                    }
+                },
+                "error": {
+                    "type": "object",
+                    "properties": {
+                        "conditions": {
+                            "type": "array",
+                            "items": {
+                                "type": [
+                                    "integer",
+                                    null
+                                ]
+                            }
+                        },
+                        "effects": {
+                            "$ref": "#/$defs/effects"
+                        }
+                    }
+                },
+                "bonus": {
+                    "type": "object",
+                    "properties": {
+                        "effects": {
+                            "$ref": "#/$defs/effects"
+                        }
+                    }
+                },
+                "actions": {
+                    "decidePoint": {
+                        "type": "string",
+                        "enum": ["restartPoint", "winPoint"]
+                    },
+                    "playerPosition": {
+                        "$ref": "#/$defs/courtPosition"
+                    },
+                    "direction": {
+                        "$ref": "#/$defs/hitDirection"
+                    }                    
+                }
+            }
+        }
     }
 }

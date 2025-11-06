@@ -1,0 +1,144 @@
+{
+    "$id": "https://tennistcg.io/schema/5d-execute-shot-direction-resolve.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 5 — Execute Shot — change hit direction challenge resolve",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "directionChangeResolve",
+                "initialRSQScore"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "execute-shot-direction-ack"
+                },
+                "directionChangeResolve": {
+                    "description": "In case the hitting player decided a direction change, they will roll a 1d6 and determine if they could surprise the waiting player or otherwise the waiting player anticipated the direction change",
+                    "type": "object",
+                    "properties": {
+                        "hittingPlayerDeclared": {
+                            "type": "string",
+                            "enum": [
+                                "keep",
+                                "change"
+                            ]
+                        },
+                        "hittingPlayer1d6Pick": {
+                            "description": "The hitting player pick for the 1d6 challenge number",
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 6
+                        },
+                        "waitingPlayer1d6Pick": {
+                            "description": "The waiting player pick for the 1d6 challenge number",
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 6
+                        },
+                        "1d6": {
+                            "description": "The 1d6 roll for the hitter shot direction change challenge",
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/1d6"
+                        },
+                        "outcome": {
+                            "description": "Either the hitting player win the challenge, the waiting player win the challenge or no one did",
+                            "type": "string",
+                            "enum": ["hitting", "waiting", "none"]
+                        }
+                    },
+                    "required": [
+                        "hittingPlayerDeclared"
+                    ],
+                    "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "hittingPlayerDeclared": {
+                                        "const": "change"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "required": [
+                                    "hittingPlayer1d6Pick",
+                                    "waitingPlayer1d6Pick",
+                                    "1d6",
+                                    "outcome"
+                                ]
+                            },
+                            "else": {
+                                "not": {
+                                    "anyOf": [
+                                        {
+                                            "required": [
+                                                "hittingPlayer1d6Pick"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "waitingPlayer1d6Pick"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "1d6"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "outcome"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                "initialRSQScoreRevised": {
+                    "type": "object",
+                    "properties": {
+                        "initialRSQScore": {
+                            "type": "integer",
+                            "minimum": 0
+                        },                 
+                        "directionChangeChallengDiff": {
+                            "type": "integer",
+                            "enum": [-2, 0, 2]                            
+                        },
+                        "value": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -180,11 +180,7 @@
             ]
         },
         "position": {
-            "type": "string",
-            "enum": [
-                "Baseline",
-                "Net"
-            ]
+            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/courtPosition"
         },
         "hand": {
             "type": "array",
@@ -202,6 +198,9 @@
             "items": {
                 "type": "string"
             }
+        },
+        "lastTurnShotCard": {
+            "type": "string"
         }
     },
     "required": [

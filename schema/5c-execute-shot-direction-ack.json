@@ -1,0 +1,110 @@
+{
+    "$id": "https://tennistcg.io/schema/5c-execute-shot-direction-ack.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 5 — Execute Shot — change hit direction challenge acknowledge",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "directionChangeAcknowledge",
+                "initialRSQScore"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "execute-shot-direction-ack"
+                },
+                "directionChangeAcknowledge": {
+                    "description": "The waiting player acknowledges and ties to anticipate a shot direction change",
+                    "type": "object",
+                    "properties": {
+                        "hittingPlayerDeclared": {
+                            "type": "string",
+                            "enum": [
+                                "keep",
+                                "change"
+                            ]
+                        },
+                        "hittingPlayer1d6Pick": {
+                            "description": "The hitting player pick for the 1d6 challenge number",
+                            "type": "number",
+                            "minimum": 1,
+                            "maximum": 6
+                        },
+                        "1d6Pick": {
+                            "description": "The responde play pick for the challenge number. Can't be the same number of `hittingPlayer1d6Pick`",
+                            "type": "number",
+                            "minimum": 1,
+                            "maximum": 6
+                        }
+                    },
+                    "required": [
+                        "hittingPlayerDeclared"
+                    ],
+                    "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "hittingPlayerDeclared": {
+                                        "const": "change"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "required": [
+                                    "hittingPlayer1d6Pick",
+                                    "1d6Pick"
+                                ]
+                            },
+                            "else": {
+                                "not": {
+                                    "anyOf": [
+                                        {
+                                            "required": [
+                                                "hittingPlayer1d6Pick"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "1d6Pick"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                "initialRSQScore": {
+                    "type": "number",
+                    "minimum": 0
+                }
+            }
+        }
+    }
+}

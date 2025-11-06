@@ -31,82 +31,27 @@
             "type": "object",
             "required": [
                 "type",
-                "hitterId",
-                "shotName",
-                "prerequisitesMet",
-                "sideUsed",
-                "skillBonus",
-                "spSpent",
+                "shot",
                 "staminaSpent",
-                "notes"
+                "spSpent"
+                
             ],
             "properties": {
                 "type": {
                     "type": "string",
                     "const": "shot-selection"
                 },
-                "shotCard": {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "cost": {
-                            "type": "object",
-                            "properties": {
-                                "spSpent": {
-                                    "type": "integer",
-                                    "minimum": 0
-                                },
-                                "staminaSpent": {
-                                    "type": "integer",
-                                    "minimum": 0
-                                }                        
-                            }
-                        },
-                        "effects": {
-                            "type": "object",
-                            "properties": {
-                                "serve": {
-                                    "type": "integer"
-                                },
-                                "forehand": {
-                                    "type": "integer"
-                                },
-                                "backhand": {
-                                    "type": "integer"
-                                },
-                                "agility": {
-                                    "type": "integer"
-                                },
-                                "stamina": {
-                                    "type": "integer"
-                                },
-                                "replenishStamina": {
-                                    "type": "boolean"
-                                },
-                                "sp": {
-                                    "type": "integer"
-                                },
-                                "replenishSp": {
-                                    "type": "boolean"
-                                },
-                                "playerPressure": {
-                                    "type": "integer"
-                                },                                
-                                "oponentPressure": {
-                                    "type": "integer"
-                                },
-                                "playerAdrenaline": {
-                                    "type": "integer"
-                                },
-                                "oponentAdrenaline": {
-                                    "type": "integer"
-                                }                                
-                            }
-                        }
-                    }
-                }
+                "shot": {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/shotCard"
+                },
+                "staminaSpent": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "spSpent": {
+                    "type": "integer",
+                    "minimum": 0
+                }                
             }
         }
     }

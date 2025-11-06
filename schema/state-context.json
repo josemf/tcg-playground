@@ -10,7 +10,7 @@
         "currentGame",
         "serverPlayer",
         "serviceSide",
-        "direction",
+        "hitDirection",
         "tiebreak"
     ],
     "properties": {
@@ -91,13 +91,8 @@
                 "Ad"
             ]
         },
-        "direction": {
-            "type": "string",
-            "description": "Hit direction for the next serve/shot—usually 'FH' or 'BH'.",
-            "enum": [
-                "FH",
-                "BH"
-            ]
+        "hitDirection": {
+            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/hitDirection"
         },
         "tiebreak": {
             "type": "boolean",
@@ -120,6 +115,11 @@
                 "playerA",
                 "playerB"
             ]
+        },
+        "playerRole": {
+            "type": "string",
+            "description": "The role of the player that is sending the current protocol message",
+            "enum": ["hittingPlayer", "waitingPlayer"],
         }
     },
     "additionalProperties": false

@@ -1,0 +1,101 @@
+{
+    "$id": "https://tennistcg.io/schema/5a-execute-shot-momentum.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 5 — Execute Shot Play Momentum cards",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "useStandardRallyShot",                                
+                "initialRSQScore"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "execute-shot-momentum"
+                },                
+                "queue": {
+                    "description": "Current momentum cards queue",
+                    "type": "array",
+                    "items": {
+
+                    }
+                    
+                },                
+                "selectedShot": {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/shotCard"
+                },                
+                "initialRSQScore": {
+                    "type": "object",
+                    "properties": {
+                        "2d6": {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/2d6"
+                        },
+                        "skill": {
+                            "description": "The FH/BH skill amount, depending on the hitDirection",
+                            "type": "integer"
+                        },                        
+                        "bonus": {
+                            "description": "Bonuses are added to RSQ from effects originating from equipments, shot or moment cards",
+                            "type": "object",
+                            "properties": {
+                                "total": {
+                                    "type": "number"
+                                },
+                                "effects": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "https://tennistcg.io/schema/state-effects.json"
+                                    }
+                                }
+                            },
+                            "required": ["total"]
+                        },
+                        "staminaSpent": {
+                            "description": "Optionally spend stamina to up RSQ",                            
+                            "type": "number",
+                            "minimum": 0
+                        },
+                        "total": {
+                            "description": "Sum 2d6, skill, bonuses and any stamina spent and define the initial RSQ score",
+                            "type": "number",
+                            "minimum": 0
+                        }
+                    },
+                    "required": [
+                        "2d6",
+                        "skill",
+                        "bonus",
+                        "staminaSpent",
+                        "total"
+                    ]
+                }
+            }
+        }
+    }
+}
