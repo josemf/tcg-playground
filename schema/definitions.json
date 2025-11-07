@@ -4,50 +4,6 @@
     "title": "Definitions JSONSchema",
 
     "$defs": {
-        "effects": {
-            "type": "object",
-            "properties": {
-                "rsq": {
-                    "type": "number"
-                },
-                "serve": {
-                    "type": "integer"
-                },
-                "forehand": {
-                    "type": "integer"
-                },
-                "backhand": {
-                    "type": "integer"
-                },
-                "agility": {
-                    "type": "integer"
-                },
-                "stamina": {
-                    "type": "integer"
-                },
-                "replenishStamina": {
-                    "type": "boolean"
-                },
-                "sp": {
-                    "type": "integer"
-                },
-                "replenishSp": {
-                    "type": "boolean"
-                },
-                "playerPressure": {
-                    "type": "integer"
-                },
-                "oponentPressure": {
-                    "type": "integer"
-                },
-                "playerAdrenaline": {
-                    "type": "integer"
-                },
-                "oponentAdrenaline": {
-                    "type": "integer"
-                }
-            }
-        },
         "courtPosition": {
             "type": "string",
             "description": "Player court position, at the 'Baseline' or at the 'Net'.",
@@ -146,7 +102,10 @@
                             }
                         },
                         "effects": {
-                            "$ref": "#/$defs/effects"
+                            "type": "array",
+                            "items": {
+                                "$ref": "https://tennistcg.io/schema/state-effects.json"
+                            }                            
                         }
                     }
                 },
@@ -163,15 +122,24 @@
                             }
                         },
                         "effects": {
-                            "$ref": "#/$defs/effects"
+                            "type": "array",
+                            "items": {
+                                "$ref": "https://tennistcg.io/schema/state-effects.json"
+                            }                            
                         }
                     }
                 },
                 "bonus": {
                     "type": "object",
                     "properties": {
-                        "effects": {
-                            "$ref": "#/$defs/effects"
+                        "addRSQ": {
+                            "type": "number"
+                        },
+                        "addForehand": {
+                            "type": "integer"
+                        },
+                        "addBackhand": {
+                            "type": "integer"
                         }
                     }
                 },

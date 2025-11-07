@@ -44,8 +44,7 @@
                     "type": "array",
                     "items": {
 
-                    }
-                    
+                    }                    
                 },                
                 "selectedShot": {
                     "$ref": "https://tennistcg.io/schema/definitions.json#/shotCard"

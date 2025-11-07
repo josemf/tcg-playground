@@ -15,35 +15,42 @@
         "sourceCard": {
             "type": "string"
         },
-        "serve": {
+        "addServe": {
             "type": "integer"
         },
-        "forehand": {
+        "addForehand": {
             "type": "integer"
         },
-        "backhand": {
+        "addBackhand": {
             "type": "integer"
         },
-        "agility": {
+        "addAgility": {
             "type": "integer"
         },
-        "stamina": {
+        "addStamina": {
             "type": "integer"
         },
-        "sp": {
+        "addSp": {
             "type": "integer"
         },
-        "pressure": {
+        "addPlayerPressure": {
             "type": "integer"
         },
-        "adrenaline": {
+        "addOpponentPressure": {
+            "type": "integer"
+        },        
+        "addPlayerAdrenaline": {
             "type": "integer"
         },
+        "addOpponentAdrenaline": {
+            "type": "integer"
+        },        
         "expiresAfter": {
             "type": "string",
             "enum": [
                 "changeover",
                 "endOfGame",
+                "endOfPoint",
                 "equipment"
             ]
         }
