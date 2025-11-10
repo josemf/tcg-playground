@@ -31,17 +31,16 @@
             "type": "object",
             "required": [
                 "type",
-                "shot",
+                "playedShotCard",
                 "staminaSpent",
-                "spSpent"
-                
+                "spSpent"                
             ],
             "properties": {
                 "type": {
                     "type": "string",
                     "const": "shot-selection"
                 },
-                "shot": {
+                "playedShotCard": {
                     "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
                 },
                 "staminaSpent": {
