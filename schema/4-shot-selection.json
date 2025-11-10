@@ -42,7 +42,7 @@
                     "const": "shot-selection"
                 },
                 "shot": {
-                    "$ref": "https://tennistcg.io/schema/definitions.json#/shotCard"
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
                 },
                 "staminaSpent": {
                     "type": "integer",

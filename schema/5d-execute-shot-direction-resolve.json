@@ -64,7 +64,7 @@
                         },
                         "1d6": {
                             "description": "The 1d6 roll for the hitter shot direction change challenge",
-                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/1d6"
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/roll1d6"
                         },
                         "outcome": {
                             "description": "Either the hitting player win the challenge, the waiting player win the challenge or no one did",

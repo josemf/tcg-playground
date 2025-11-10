@@ -44,13 +44,13 @@
                     "type": "boolean"
                 },                
                 "selectedShot": {
-                    "$ref": "https://tennistcg.io/schema/definitions.json#/shotCard"
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
                 },                
                 "initialRSQScore": {
-                    "type": "object",
+                    "type": "object",                   
                     "properties": {
                         "2d6": {
-                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/2d6"
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/roll2d6"
                         },
                         "skill": {
                             "description": "The FH/BH skill amount, depending on the hitDirection",

@@ -50,7 +50,7 @@
                     ],
                     "properties": {
                         "2d6": {
-                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/2d6"                            
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/roll2d6"                            
                         },
                         "valid": {
                             "type": "boolean"
@@ -64,7 +64,7 @@
                     ],
                     "properties": {
                         "2d6": {
-                            "$ref": "https://tennistcg.io/schema/definitions.json#/properties/2d6"                            
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/roll2d6"                            
                         }
                     }
                 },

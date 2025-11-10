@@ -1,12 +1,12 @@
 {
     "$id": "https://tennistcg.io/schema/definitions.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Definitions JSONSchema",
-
+    "title": "Tennis TCG Core Data Definitions",
+    "description": "Reusable definitions for Tennis TCG schemas: enums, meta-objects, common data structures used throughout protocol messages and card specifications.",    
     "$defs": {
         "courtPosition": {
             "type": "string",
-            "description": "Player court position, at the 'Baseline' or at the 'Net'.",
+            "description": "Legal court positions for a player: 'Baseline' or 'Net'.",
             "enum": [
                 "Baseline",
                 "Net"
@@ -14,18 +14,15 @@
         },
         "hitDirection": {
             "type": "string",
-            "description": "Hit direction for the next serve/shot—usually 'FH' or 'BH'.",
+            "description": "Hit direction for a shot or serve: 'FH' (Forehand) or 'BH' (Backhand).",
             "enum": [
                 "FH",
                 "BH"
             ]
-        }                            
-    },
-    
-    "type": "object",
-    "properties": {
-        "1d6": {
+        },
+        "roll1d6": {
             "type": "array",
+            "description": "A single six-sided die roll, result will always be an array of 1 integer: [1-6].",            
             "items": {
                 "type": "integer",
                 "minimum": 1,
@@ -34,8 +31,9 @@
             "minItems": 1,
             "maxItems": 1
         },
-        "2d6": {
+        "roll2d6": {
             "type": "array",
+            "description": "Two six-sided dice rolls, result is array of two integers [1-6, 1-6].",            
             "items": {
                 "type": "integer",
                 "minimum": 1,
@@ -44,68 +42,209 @@
             "minItems": 2,
             "maxItems": 2
         },
+        "effect": {
+            "type": "object",
+            "description": "A single temporary or persistent game effect from a card (shot, momentum, or equipment).",            
+            "required": [
+                "sourceType",
+                "sourceCard",
+                "aspect",
+                "target",
+                "add",
+                "expiresAt"
+            ],
+            "properties": {
+                "sourceType": {
+                    "type": "string",
+                    "description": "What kind of card applied this effect.",                    
+                    "enum": [
+                        "shot",
+                        "momentum",
+                        "equipment"
+                    ]
+                },
+                "sourceCard": {
+                    "type": "string",
+                    "description": "Name of the card that produced this effect."                    
+                },
+                "aspect": {
+                    "type": "string",
+                    "description": "Game stat or resource affected.",                    
+                    "enum": ["serve", "forehand", "backhand", "agility", "stamina", "sp", "pressure", "adrenaline" ]
+                },
+                "target": {
+                    "type": "string",
+                    "description": "Who is affected: 'player' (you), or 'opponent'.",                    
+                    "enum": ["player", "opponent"]
+                },
+                "add": {
+                    "type": "integer",
+                    "description": "Numeric value to add (or subtract if negative) to the aspect for the effect's duration."                    
+                },
+                "expiresAt": {
+                    "type": "string",
+                    "description": "When does this effect expire? End of game, end of point, when equipment is removed, or at changeover.",                    
+                    "enum": [
+                        "changeover",
+                        "endOfGame",
+                        "endOfPoint",
+                        "equipment"
+                    ]
+                }
+            }
+        },
+        "actions": {
+            "type": "object",
+            "description": "Specifies in-detail the effects, roll changes, restrictions, or outcomes from a card being played or an event being resolved.",            
+            "properties": {
+                "ignorePressure": {
+                    "type": "boolean",
+                    "description": "If true, do not apply 'pressure' mechanic when calculating RSQ."                    
+                },                    
+                "ignoreAdrenaline": {
+                    "type": "boolean",
+                    "description": "If true, adrenaline status is ignored for this calculation or phase."                    
+                },                    
+                "ignoreEffectsBonus": {
+                    "type": "boolean",
+                    "description": "If true, no bonuses from active effects are included for this calculation."                    
+                },
+                "disableRoll": {
+                    "type": "boolean",
+                    "description": "If true, 2d6 RSQ rolling is suppressed; alternate calculation must be provided."                    
+                },
+                "overrideRollAmount": {
+                    "type": "string",
+                    "description": "If set, use this value as the amount for the 'roll' term in RSQ calculation."                    
+                },
+                "disableMental": {
+                    "type": "boolean",
+                    "description": "If true, Mental Toughness cannot be spent during this turn/phase."                    
+                },                    
+                "overrideSkill": {
+                    "type": "string",
+                    "enum": ["FH", "BH"],
+                    "description": "Use the specified skill ('FH' or 'BH') when adding skill for RSQ calculation."                    
+                },
+                "roll1d6": {
+                    "type": "boolean",
+                    "description": "If true, roll a 1d6 for context-dependent effects (e.g. some Momentum cards)."                    
+                },
+                "roll2d6": {
+                    "type": "boolean",
+                    "description": "If true, roll 2d6 for alternate effects."                    
+                },                    
+                "overrideRSQ": {
+                    "type": "string",
+                    "description": "If set, do not follow default RSQ calculation; use this explicit formula."                    
+                },
+                "modifyRSQ": {
+                    "type": "string",
+                    "description": "If set, apply this rule to modify the calculated RSQ amount."                    
+                },
+                "replenishStamina": {
+                    "type": "boolean",
+                    "description": "If true, set stamina to current max for the affected player."
+                },
+                "setStamina": {
+                    "type": "string",
+                    "description": "Set the hitter's current stamina to the provided value (expressed explicitly or referencing another field/rule)."                    
+                },                    
+                "counterCardInStack" : {
+                    "type": "boolean",
+                    "description": "Set to true to counter/remove the previous card in the momentum stack."
+                },
+                "setDecidePoint": {
+                    "type": "string",
+                    "description": "Apply the following rule to decide the outcome of the point"                    
+                },                    
+                "decidePoint": {                        
+                    "type": "string",
+                    "description": "Set the point outcome: restart, win, or lose.",                    
+                    "enum": [
+                        "restartPoint",
+                        "winPoint",
+                        "losePoint"
+                    ]
+                },
+                "playerPosition": {
+                    "$ref": "#/$defs/courtPosition",
+                    "description": "If set, change the affected player's position."                    
+                },
+                "direction": {
+                    "$ref": "#/$defs/hitDirection",
+                    "description": "If set, specifies or changes the next ball direction."                    
+                }
+            }
+        },
         "shotCard": {
             "type": "object",
-
+            "description": "A complete definition for a Shot-type card a player can play during a rally.",            
             "required": [
                 "name",
                 "cost",
                 "requirements",
                 "winner",
                 "error",
-                "bonus",
-                "actions"                
+                "actions"
             ],
-            
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the shot card (e.g. 'Smash', 'Drop Shot')."                    
                 },
                 "cost": {
                     "type": "object",
-                    "required": ["spSpent", "staminaSpent"],
+                    "description": "Cost to play this card (SP and Stamina spent).",                    
+                    "required": [
+                        "spSpent",
+                        "staminaSpent"
+                    ],
                     "properties": {
                         "spSpent": {
                             "type": "integer",
-                            "minimum": 0
+                            "minimum": 0,
+                            "description": "Swing Points spent to play this shot."                            
                         },
                         "staminaSpent": {
                             "type": "integer",
-                            "minimum": 0
+                            "minimum": 0,
+                            "description": "Stamina spent to play this shot."                            
                         }
                     }
                 },
                 "requirements": {
                     "type": "object",
+                    "description": "Requirements for playing this card at this moment.",                    
                     "properties": {
                         "playerPosition": {
-                            "$ref": "#/$defs/courtPosition"
+                            "$ref": "#/$defs/courtPosition",
+                            "description": "Player's required position to play this shot."                            
                         },
                         "direction": {
-                            "$ref": "#/$defs/hitDirection"
+                            "$ref": "#/$defs/hitDirection",
+                            "description": "Required incoming shot direction."                            
                         },
                         "lastTurnShotCard": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Type/name of the previous shot (if needed)."                            
                         }
                     }
                 },
                 "winner": {
                     "type": "object",
+                    "description": "How this card can grant an immediate winner.",                    
                     "properties": {
                         "conditions": {
-                            "type": "array",
-                            "items": {
-                                "type": [
-                                    "integer",
-                                    null
-                                ]
-                            }
+                            "type": "string",
+                            "description": "Custom rules that define the winner shot condition."
                         },
                         "effects": {
                             "type": "array",
+                            "description": "Effects that occur when this shot is a winner.",                            
                             "items": {
-                                "$ref": "https://tennistcg.io/schema/state-effects.json"
-                            }                            
+                                "$ref": "#/$defs/effect"
+                            }
                         }
                     }
                 },
@@ -113,47 +252,46 @@
                     "type": "object",
                     "properties": {
                         "conditions": {
-                            "type": "array",
-                            "items": {
-                                "type": [
-                                    "integer",
-                                    null
-                                ]
-                            }
+                            "type": "string",
+                            "description": "Custom rules that define the error shot condition."                            
                         },
                         "effects": {
                             "type": "array",
+                            "description": "One or more effects to be triggered when an error occurs.",                            
                             "items": {
-                                "$ref": "https://tennistcg.io/schema/state-effects.json"
-                            }                            
-                        }
-                    }
-                },
-                "bonus": {
-                    "type": "object",
-                    "properties": {
-                        "addRSQ": {
-                            "type": "number"
-                        },
-                        "addForehand": {
-                            "type": "integer"
-                        },
-                        "addBackhand": {
-                            "type": "integer"
+                                "$ref": "#/$defs/effect"
+                            }
                         }
                     }
                 },
                 "actions": {
-                    "decidePoint": {
-                        "type": "string",
-                        "enum": ["restartPoint", "winPoint"]
-                    },
-                    "playerPosition": {
-                        "$ref": "#/$defs/courtPosition"
-                    },
-                    "direction": {
-                        "$ref": "#/$defs/hitDirection"
-                    }                    
+                    "$ref": "#/$defs/actions",
+                    "description": "A set of special actions that are executed when this shot card is played."                                        
+                }
+            }
+        },
+
+        "momentumCard": {
+            "type": "object",
+            "description": "A complete definition for a Momentum-type card a player can play during the momentum phase of a rally shot.",                        
+            "properties": {
+                "cost": {
+                    "type": "object",
+                    "description": "Cost to play this card.",                                        
+                    "required": [
+                        "spSpent"
+                    ],
+                    "properties": {
+                        "spSpent": {
+                            "description": "SP (Swing Point) cost to play this card",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                },                
+                "actions": {                
+                    "$ref": "#/$defs/actions",
+                    "description": "A set of special actions that are executed when this momentum card is played or resolves in the momentum phase."
                 }
             }
         }

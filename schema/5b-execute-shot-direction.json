@@ -41,7 +41,7 @@
                     "const": "execute-shot-direction"
                 },
                 "selectedShot": {
-                    "$ref": "https://tennistcg.io/schema/definitions.json#/shotCard"
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
                 },
                 "shotCardOverridesDirectionChange": {
                     "description": "Shot card can define a direction change. When that happens the direction change protocol is applied.",
