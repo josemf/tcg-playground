@@ -119,7 +119,12 @@
         "playerRole": {
             "type": "string",
             "description": "The role of the player that is sending the current protocol message",
-            "enum": ["hittingPlayer", "waitingPlayer"],
+            "enum": ["hittingPlayer", "waitingPlayer"]
+        },
+        "sendingPlayer": {
+            "type": "string",
+            "description": "The player ID that is composed and sent the current message",
+            "enum": ["playerA", "playerB"]
         }
     },
     "additionalProperties": false

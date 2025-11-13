@@ -1,7 +1,7 @@
 {
-    "$id": "https://tennistcg.io/schema/5e-execute-shot-momentum.json",
+    "$id": "https://tennistcg.io/schema/5f-execute-shot-momentum-resolve.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Phase 5 — Execute Shot Play Momentum cards",
+    "title": "Phase 5 — Execute Shot Play Momentum cards — resolve",
     "type": "object",
     "required": [
         "context",
@@ -31,24 +31,30 @@
             "type": "object",
             "required": [
                 "type",
-                "selectedShot",
-                "stack",
-                "decidePlayMomentumCard"
+                "resolvedStack"
             ],
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "execute-shot-momentum"
+                    "const": "execute-shot-momentum-resolve"
                 },
                 "selectedShot": {
                     "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard",
                     "description": "The shot that is currently being resolved, against which momentum cards may be played."                    
                 },
-                "stack": {
+                "resolvedStack": {
                     "type": "array",
                     "description": "Current stack (queue) of momentum cards played (LIFO).",                    
                     "items": {
-                        "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/momentumCard"
+                        "type": "object",
+                        "properties": {
+                            "momenumCard": {
+                                "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/momentumCard"
+                            },
+                            "countered": {
+                                "type": "boolean"
+                            }
+                        }                                                                      
                     }
                 },
                 "decidePlayMomentumCard": {
