@@ -1,5 +1,5 @@
 {
-    "$id": "https://tennistcg.io/schema/5d-execute-shot-direction-resolve.json",
+    "$id": "https://tennistcg.io/schema/5a-prepare-shot-direction-resolve.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Phase 5 — Execute Shot — change hit direction challenge resolve",
     "type": "object",
@@ -32,12 +32,12 @@
             "required": [
                 "type",
                 "directionChangeResolve",
-                "initialRSQScore"
+                "shotDirectionRSQBonus"
             ],
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "execute-shot-direction-ack"
+                    "const": "prepare-shot-direction-resolve"
                 },
                 "directionChangeResolve": {
                     "description": "In case the hitting player decided a direction change, they will roll a 1d6 and determine if they could surprise the waiting player or otherwise the waiting player anticipated the direction change",
@@ -121,22 +121,10 @@
                         }
                     ]
                 },
-                "initialRSQScoreRevised": {
-                    "type": "object",
-                    "properties": {
-                        "initialRSQScore": {
-                            "type": "integer",
-                            "minimum": 0
-                        },                 
-                        "directionChangeChallengDiff": {
-                            "type": "integer",
-                            "enum": [-2, 0, 2]                            
-                        },
-                        "value": {
-                            "type": "integer",
-                            "minimum": 0
-                        }
-                    }
+                "shotDirectionRSQBonus": {
+                    "type": "integer",
+                    "description": "The RSQ adjustement that results in the hitting player surprising the adversary (+2 RSQ), the adversary guessing the direction change (-2 RSQ) or just neutral effect (no change to RSQ).",
+                    "enum": [-2, 0, 2]                            
                 }
             }
         }

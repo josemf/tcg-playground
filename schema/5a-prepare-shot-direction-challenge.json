@@ -1,7 +1,7 @@
 {
-    "$id": "https://tennistcg.io/schema/5c-execute-shot-direction-ack.json",
+    "$id": "https://tennistcg.io/schema/5a-prepare-shot-direction-challenge.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Phase 5 — Execute Shot — change hit direction challenge acknowledge",
+    "title": "Phase 5 — Prepare Shot — change hit direction challenge",
     "type": "object",
     "required": [
         "context",
@@ -31,15 +31,14 @@
             "type": "object",
             "required": [
                 "type",
-                "directionChangeAcknowledge",
-                "initialRSQScore"
+                "directionChangeChallenge"
             ],
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "execute-shot-direction-ack"
+                    "const": "prepare-shot-direction-challenge"
                 },
-                "directionChangeAcknowledge": {
+                "directionChangeChallenge": {
                     "description": "The waiting player acknowledges and ties to anticipate a shot direction change",
                     "type": "object",
                     "properties": {
@@ -99,10 +98,6 @@
                             }
                         }
                     ]
-                },
-                "initialRSQScore": {
-                    "type": "number",
-                    "minimum": 0
                 }
             }
         }

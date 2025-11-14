@@ -50,7 +50,7 @@
                 "sourceCard",
                 "aspect",
                 "target",
-                "add",
+                "amount",
                 "expiresAt"
             ],
             "properties": {
@@ -77,7 +77,7 @@
                     "description": "Who is affected: 'player' (you), or 'opponent'.",                    
                     "enum": ["player", "opponent"]
                 },
-                "add": {
+                "amount": {
                     "type": "integer",
                     "description": "Numeric value to add (or subtract if negative) to the aspect for the effect's duration."                    
                 },
@@ -133,12 +133,16 @@
                 "roll2d6": {
                     "type": "boolean",
                     "description": "If true, roll 2d6 for alternate effects."                    
-                },                    
-                "overrideRSQ": {
+                },
+                "addRSQBonusAmount": {
+                    "type": "number",
+                    "description": "Add (or subtract if negative amount) some amount for RSQ"
+                },
+                "overrideBaseRSQ": {
                     "type": "string",
                     "description": "If set, do not follow default RSQ calculation; use this explicit formula."                    
                 },
-                "modifyRSQ": {
+                "modifyBaseRSQ": {
                     "type": "string",
                     "description": "If set, apply this rule to modify the calculated RSQ amount."                    
                 },

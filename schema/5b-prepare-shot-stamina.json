@@ -1,0 +1,66 @@
+{
+    "$id": "https://tennistcg.io/schema/5b-prepare-shot-stamina.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 5 — Prepare Shot",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "staminaSpent"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "prepare-shot-stamina"
+                },                
+                "selectedShot": {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
+                },                
+                "staminaSpent": {
+                    "type": "object",                   
+                    "properties": {
+                        "amount": {
+                            "description": "How much spend stamina to up RSQ",                            
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "remaining": {
+                            "description": "How much stamina remains for player",                            
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    "required": [
+                        "amount",
+                        "remaining"
+                    ]
+                }
+            }
+        }
+    }
+}

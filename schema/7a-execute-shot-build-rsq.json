@@ -1,0 +1,200 @@
+{
+    "$id": "https://tennistcg.io/schema/7a-execute-shot-build-rsq.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Phase 5 — Execute Shot",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "useStandardRallyShot",                                
+                "initialRSQScore"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "execute-shot-build-rsq"
+                },
+                "selectedShot": {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
+                },                                
+                "overrideBaseRSQ": {
+                    "description": "Wether Base RSQ build phase was overrided by a momentum card.",
+                    "type": "boolean"
+                },
+                "overrideBaseRSQAmount": {
+                    "description": "The Base RSQ amount as overrided by a momentum card.",
+                    "type": "integer"                    
+                },
+                "baseRSQScore": {
+                    "type": "object",                   
+                    "properties": {
+                        "roll2d6Amount": {
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether rolling dice step was disabled by a previous momentum card"
+                                },
+                                "roll": {
+                                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/roll2d6"
+                                },
+                                "amount": {
+                                    "type": "integer",
+                                    "description": "The amount is the sum of the 2d6 roll results"                                    
+                                }
+                            }                            
+                            
+                        },
+                        "skillAmount": {
+                            "description": "The FH/BH skill amount, depending on the hitDirection",
+                            "type": "integer"
+                        },                        
+                        "bonusAmount": {
+                            "description": "RSQ Bonuses added from effects originating from equipments, shot or moment cards",
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether card bonus amount was disabled by an active momentum action effect"
+                                },
+                                "total": {
+                                    "type": "integer",
+                                    "description": "Total amount for RSQ Bonus component"
+                                },
+                                "originating": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "sourceType": {
+                                                "type": "string",
+                                                "description": "What kind of card applied this effect.",                    
+                                                "enum": [
+                                                    "shot",
+                                                    "momentum",
+                                                    "equipment"
+                                                ]
+                                            },
+                                            "sourceCard": {
+                                                "type": "string",
+                                                "description": "Name of the card that produced this effect."                    
+                                            },
+                                            "amount": {
+                                                "type": "integer",
+                                                "description": "The amount of RSQ added or subtracted by the source card"
+                                            }
+                                        },
+                                        
+                                        "$ref": "https://tennistcg.io/schema/state-effects.json"
+                                    }
+                                }
+                            },
+                            "required": []
+                        },
+                        "staminaSpent": {
+                            "description": "Stamina spent when preparing shot. It will be added as a RSQ component if not disabled",
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether stamina amount was disabled by an active momentum action effect"
+                                },                                
+                                "amount": {
+                                    "type": "number",
+                                    "minimum": 0
+                                }
+                            }
+                        },
+                        "directionChangeBonus": {
+                            "description": "Strike direction change bonus, determined when preparing shot. It will be added as a RSQ component if not disabled",
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether ball direction change bonus was disabled by an active momentum action effect"
+                                },                                
+                                "amount": {
+                                    "type": "number",
+                                    "minimum": 0
+                                }
+                            }
+                        },
+                        "adrenalineModifier": {
+                            "description": "Player adrenaline modifier is added or subtracted according player choice. It will be added as a RSQ component if not disabled",
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether adrenaline modifier was disabled by an active momentum action effect"
+                                },                                                                
+                                "decision": {
+                                    "type": "string",
+                                    "description": "Decide wether adrenaline should be add or subtracted when calculating Base RSQ.",
+                                    "enum": ["add", "subtract"]
+                                },                                
+                                "amount": {
+                                    "type": "number",
+                                    "minimum": 0
+                                }
+                            }
+                        },
+                        "playerPressureModifier": {
+                            "description": "Player pressure modifier is added or subtracted according player choice. It will be added as a RSQ component if not disabled",
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether player pressure modifier was disabled by an active momentum action effect"
+                                },                                                                
+                                "amount": {
+                                    "type": "number",
+                                    "minimum": 0
+                                }
+                            }
+                        },                        
+                        "total": {
+                            "description": "Sum 2d6, skill, bonuses and any stamina spent and define the initial RSQ score",
+                            "type": "number",
+                            "minimum": 0
+                        }
+                    },
+                    "required": [                        
+                        "roll2d6Amount",                        
+                        "skillAmount",
+                        "bonusAmount",
+                        "staminaSpent",
+                        "directionChangeBonus",
+                        "adrenalineModifier",
+                        "playerPressureModifier",
+                        "total"                        
+                    ]
+                }
+            }
+        }
+    }
+}

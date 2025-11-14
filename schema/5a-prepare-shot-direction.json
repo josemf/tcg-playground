@@ -1,7 +1,7 @@
 {
-    "$id": "https://tennistcg.io/schema/5b-execute-shot-direction.json",
+    "$id": "https://tennistcg.io/schema/5a-prepare-shot-direction.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Phase 5 — Execute Shot — change hit direction challenge",
+    "title": "Phase 5 — Prepare Shot — change hit direction challenge",
     "type": "object",
     "required": [
         "context",
@@ -32,13 +32,12 @@
             "required": [
                 "type",
                 "shotCardOverridesDirectionChange",
-                "directionChangeDeclare",
-                "initialRSQScore"                
+                "directionChangeDeclare"
             ],
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "execute-shot-direction"
+                    "const": "prepare-shot-direction"
                 },
                 "selectedShot": {
                     "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
@@ -105,10 +104,6 @@
                             }
                         }
                     ]                    
-                },
-                "initialRSQScore": {
-                    "type": "integer",
-                    "minimum": 0
                 }                
             }
         }

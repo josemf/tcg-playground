@@ -1,7 +1,7 @@
 {
-    "$id": "https://tennistcg.io/schema/5f-execute-shot-momentum-resolve.json",
+    "$id": "https://tennistcg.io/schema/6-play-momentum-card.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Phase 5 — Execute Shot Play Momentum cards — resolve",
+    "title": "Phase 6 — Play a Momentum card",
     "type": "object",
     "required": [
         "context",
@@ -31,30 +31,25 @@
             "type": "object",
             "required": [
                 "type",
-                "resolvedStack"
+                "selectedShot",
+                "stack",
+                "decidePlayMomentumCard",
+                "combinedActionModifiers"                
             ],
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "execute-shot-momentum-resolve"
+                    "const": "play-momentum-card"
                 },
                 "selectedShot": {
                     "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard",
                     "description": "The shot that is currently being resolved, against which momentum cards may be played."                    
                 },
-                "resolvedStack": {
+                "stack": {
                     "type": "array",
-                    "description": "Current stack (queue) of momentum cards played (LIFO).",                    
+                    "description": "Current stack of momentum cards played.",                    
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "momenumCard": {
-                                "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/momentumCard"
-                            },
-                            "countered": {
-                                "type": "boolean"
-                            }
-                        }                                                                      
+                        "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/momentumCard"
                     }
                 },
                 "decidePlayMomentumCard": {
@@ -77,7 +72,11 @@
                 "drawnCard": {
                     "type": "string",
                     "description": "After playing a card the player draws a new card from the stack"
-                }                
+                },
+                "combinedActionModifiers": {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/actions",
+                    "description": "The action modifiers that result in combining all played momentum cards in sequence. Momentum actions will any defined from in a previous played momentum card this turn"
+                }
             },
             "allOf": [
                 {
