@@ -1,7 +1,7 @@
 {
-    "$id": "https://tennistcg.io/schema/3-anticipate.json",
+    "$id": "https://tennistcg.io/schema/8-shot-outcome.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Phase 3 — Anticipate",
+    "title": "Phase 6 — Resolve shot outcome",
     "type": "object",
     "required": [
         "context",
@@ -31,26 +31,49 @@
             "type": "object",
             "required": [
                 "type",
-                "incomingSQ",
-                "calculatedSQ",
-                "effectiveSQ"
+                "effectiveRSQ",
+                "pointDecideOutcome",
+                "positioning",
+                "resultingSQ"
             ],
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "anticipate"
+                    "const": "resolve-shot-outcome"
                 },
-                "incomingSQ": {
+                "selectedShot": {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
+                },
+                "effectiveRSQ": {
                     "type": "integer",
-                    "minimum": 0
+                    "description": "The effective RSQ from previous phase"
                 },
-                "requiredPositioning": {
+                "pointDecideOutcome": {
                     "type": "object",
-                    "description": "In order to be able to continue the rally the player will be given the chance to approach the net or move the the baseline. This choice only applies when an opponent shot card defines it.",
                     "properties": {
-                        "cardRequiresPositioning": {
+                        "decidePoint": {
+                            "type": "string",
+                            "description": "The point is decided if any winner or error conditions are matched",
+                            "enum": ["winner", "error", "point_continues"]
+                        },
+                        "matchedRule": {
+                            "type": "string",
+                            "description": "The rule that matches effective RSQ to decide the point. When there isn't a shot card that defines winner or error rule, the following are used: - Winner: EffectiveRSQ ≥ 2×incoming SQ and EffectiveRSQ < 15 → you win the point. Error: EffectiveRSQ ≤ incoming SQ/2 → you lose the point.- Error: EffectiveRSQ > 15 → you lose the point."
+                        },
+                        "sourceCard": {
+                            "type": "string",
+                            "description": "The card name that contains the rule used to decide the point"
+                        }
+                    },
+                    "required": ["decidePoint"]
+                },
+                "positioning": {
+                    "type": "object",
+                    "required": ["action", "staminaSpent", "finalPosition"],
+                    "properties": {
+                        "cardOverridesPositioningDecision": {
                             "type": "object",
-                            "description": "Some shot cards have the effect of requiring the player positioning in court when responding to a shot",
+                            "description": "Some cards have the effect to decide the player positioning in court",
                             "properties": {
                                 "sourceCard": {
                                     "type": "string",
@@ -58,13 +81,13 @@
                                 },
                                 "position": {
                                     "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/courtPosition",
-                                    "description": "The player positioning required by the card"
+                                    "description": "When a card decided the player positioning this should reflect the new player position according to the card"
                                 }
                             }
                         },
                         "action": {
                             "type": "string",
-                            "description": "The player can decide to approach the net or move to the baseline as required by the opponent shot card",
+                            "description": "The hitting player can decide to approach the net or move to the baseline",
                             "enum": ["approach_the_net", "move_baseline", "keep_position"]
                         },
                         "staminaSpent": {
@@ -89,48 +112,28 @@
                         "finalPosition": {                            
                             "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/courtPosition",
                             "description": "The final hitting player position"
-                        }                        
+                        }
                     }
                 },
-                "calculatedSQ": {
-                    "description": "The rule is to use agility and any spent stamina to calculate incomming SQ",
+
+                "resultingSQ": {
                     "type": "object",
+                    "description": "After effective RSQ we calculate the player SQ to take into account court conditions or other environmental factors that change ball movement",
+                    "required": ["speedModifier", "value"],
                     "properties": {
-                        "agility": {
-                            "type": "integer"
-                        },
-                        "staminaSpent": {
+                        "speedModifier": {
                             "type": "integer",
-                            "minimum": 0
+                            "description": "Court speed modifier according the court surface. Default is 0."
                         },
                         "value": {
-                            "type": "number"
-                        }
-                    },
-                    "required": [
-                        "agility",
-                        "staminaSpent",
-                        "value"
-                    ]
-                },
-                "effectiveSQ": {
-                    "description": "The effective SQ the responde player will face",
-                    "type": "object",
-                    "properties": {
-                        "atTheNetThreshold10Rule": {
-                            "description": "Wether the responder is at the net and we had to apply the threshold 10 rule: If incoming SQ < 10: New SQ = Calculated SQ − (10 − SQ); If incoming SQ = 10: New SQ = 10 (no change); If incoming SQ > 10: New SQ = Calculated SQ + (Calculated SQ − 10)",
-                            "type": "boolean"
-                        },
-                        "value": {
-                            "description": "Calculated SQ or New SQ after threshold 10 rule if responder at the net",
                             "type": "integer",
-                            "minimum": 0                            
+                            "description": "Next incoming SQ on opponent turn"
                         }
                     }
                 }
-            },
-            "additionalProperties": false
-        }
-    },
-    "additionalProperties": false
+            }
+        },
+
+        "additionalProperties": false
+    }
 }

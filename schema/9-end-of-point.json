@@ -1,0 +1,59 @@
+{
+    "$id": "https://tennistcg.io/schema/9-end-of-point.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "PH1 — End of Point",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "pointWinningPlayer",
+                "expiredCardEffects"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "end-of-point"
+                },
+                "pointWinningPlayer": {
+                    "type": "string",
+                    "description": "The player that win the point",
+                    "enum": ["playerA", "playerB"]
+                },
+                "expiredCardEffects": {
+                    "type": "array",
+                    "description": "This card effects are to be removed from the effects list since they expired",
+                    "items": {
+                        "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/effect"
+                    }
+                }
+            }
+        },
+
+        "additionalProperties": false
+    }
+}

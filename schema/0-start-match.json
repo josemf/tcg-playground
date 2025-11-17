@@ -16,10 +16,10 @@
             "type": "object",
             "properties": {
                 "playerA": { "$ref": "https://tennistcg.io/schema/state-player.json" },
-                "pxlayerB": { "$ref": "https://tennistcg.io/schema/state-player.json" }
+                "playerB": { "$ref": "https://tennistcg.io/schema/state-player.json" }
             },
             "required": ["playerA", "playerB"]
-        }
+        },
         "phase": {
             "type": "object",
             "required": [

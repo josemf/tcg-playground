@@ -1,0 +1,118 @@
+{
+    "$id": "https://tennistcg.io/schema/10-changeover.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "PH1 — Changeover",
+    "type": "object",
+    "required": [
+        "context",
+        "players",
+        "phase"
+    ],
+    "properties": {
+        "context": {
+            "$ref": "https://tennistcg.io/schema/state-context.json"
+        },
+        "players": {
+            "type": "object",
+            "properties": {
+                "playerA": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                },
+                "playerB": {
+                    "$ref": "https://tennistcg.io/schema/state-player.json"
+                }
+            },
+            "required": [
+                "playerA",
+                "playerB"
+            ]
+        },
+        "phase": {
+            "type": "object",
+            "required": [
+                "type",
+                "equipping",
+                "expiredCardEffects"                
+            ],
+
+            "additionalProperties": false,
+            
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "changeover"
+                },
+
+                "equipping": {
+                    "type": "array",
+                    "description": "The player equips a number of equipment cards",
+                    "items": {
+                        "type": "object",
+                        "required": ["slotName", "installedEquipment"],
+                        "properties": {
+                            "slotName": {
+                                "type": "string",
+                                "description": "The slot the equipment is installed. There can only be one equipment per slot",
+                                "enum": [
+                                    "Racquet",
+                                    "Shoes",
+                                    "Wristband",
+                                    "Visor",
+                                    "Shirt",
+                                    "Shorts",
+                                    "Headband",
+                                    "Socks",
+                                    "Overgrip"
+                                ]
+                            },
+                            "replacedEquipment": {
+                                "type": "object",
+                                "description": "Equipment card already installed in the slot that needs to be unequipped",
+                                "required": ["card", "effects"],
+                                "properties": {
+                                    "card": {
+                                        "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                                    },
+                                    "effects": {
+                                        "type": "array",
+                                        "description": "This card effects are to be removed from the effects list for the replaced equipment",
+                                        "items": {
+                                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/effect"
+                                        }
+                                    }                                    
+                                }
+                            },
+                            "installedEquipment": {
+                                "type": "object",
+                                "description": "Equipment card the player is installing in the slot",
+                                "required": ["card", "effects"],                                
+                                "properties": {
+                                    "card": {
+                                        "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                                    },
+                                    "effects": {
+                                        "type": "array",
+                                        "description": "This card effects are to be added to the effects list for newly equiped equipments",
+                                        "items": {
+                                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/effect"
+                                        }
+                                    }                                    
+                                }
+                            }
+                        }
+                    }
+                },                
+                
+                "expiredCardEffects": {
+                    "type": "array",
+                    "description": "This card effects are to be removed from the effects list since they expired",
+                    "items": {
+                        "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/effect"
+                    }
+                }                
+            }
+        },
+
+        "additionalProperties": false
+    }
+}

@@ -97,9 +97,9 @@
             "type": "object",
             "description": "Specifies in-detail the effects, roll changes, restrictions, or outcomes from a card being played or an event being resolved.",            
             "properties": {
-                "ignorePressure": {
+                "ignorePlayerPressure": {
                     "type": "boolean",
-                    "description": "If true, do not apply 'pressure' mechanic when calculating RSQ."                    
+                    "description": "If true, do not apply 'player pressure' mechanic when calculating RSQ."                    
                 },                    
                 "ignoreAdrenaline": {
                     "type": "boolean",
@@ -117,10 +117,6 @@
                     "type": "string",
                     "description": "If set, use this value as the amount for the 'roll' term in RSQ calculation."                    
                 },
-                "disableMental": {
-                    "type": "boolean",
-                    "description": "If true, Mental Toughness cannot be spent during this turn/phase."                    
-                },                    
                 "overrideSkill": {
                     "type": "string",
                     "enum": ["FH", "BH"],
@@ -137,10 +133,6 @@
                 "addRSQBonusAmount": {
                     "type": "number",
                     "description": "Add (or subtract if negative amount) some amount for RSQ"
-                },
-                "overrideBaseRSQ": {
-                    "type": "string",
-                    "description": "If set, do not follow default RSQ calculation; use this explicit formula."                    
                 },
                 "modifyBaseRSQ": {
                     "type": "string",
@@ -279,6 +271,10 @@
             "type": "object",
             "description": "A complete definition for a Momentum-type card a player can play during the momentum phase of a rally shot.",                        
             "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The card name"
+                },
                 "cost": {
                     "type": "object",
                     "description": "Cost to play this card.",                                        
@@ -296,6 +292,37 @@
                 "actions": {                
                     "$ref": "#/$defs/actions",
                     "description": "A set of special actions that are executed when this momentum card is played or resolves in the momentum phase."
+                }
+            }
+        },
+        "equipmentCard": {
+            "type": "object",
+            "description": "A complete definition for an Equipment-type card a player can play during the changeover",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The card name"
+                },                
+                "cost": {
+                    "type": "object",
+                    "description": "Cost to play this card.",                                        
+                    "required": [
+                        "spSpent"
+                    ],
+                    "properties": {
+                        "spSpent": {
+                            "description": "SP (Swing Point) that needs to be available to play this card",
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                },
+                "effects": {
+                    "type": "array",
+                    "description": "Effects that will be active when the equipment is installed",                            
+                    "items": {
+                        "$ref": "#/$defs/effect"
+                    }
                 }
             }
         }
