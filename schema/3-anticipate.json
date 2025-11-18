@@ -92,6 +92,7 @@
                         }                        
                     }
                 },
+                
                 "calculatedSQ": {
                     "description": "The rule is to use agility and any spent stamina to calculate incomming SQ",
                     "type": "object",
@@ -99,16 +100,22 @@
                         "agility": {
                             "type": "integer"
                         },
+                        "absorb" :{
+                            "type": "integer",
+                            "description": "The current amount from the player absorb modifier"
+                        },
                         "staminaSpent": {
                             "type": "integer",
                             "minimum": 0
                         },
                         "value": {
-                            "type": "number"
+                            "type": "number",
+                            "description": "Calculated SQ amount. That will be the effective SQ or subject to threshold 10 rule if the player is at the net"
                         }
                     },
                     "required": [
                         "agility",
+                        "absorb",
                         "staminaSpent",
                         "value"
                     ]

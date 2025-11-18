@@ -53,16 +53,37 @@
                             "type": [
                                 "string",
                                 "null"
-                            ]
+                            ],
+                            "description": "Name/id of the card discarded from hand when cycling; null if no cycle."                            
                         },
                         "drawn": {
                             "type": [
                                 "string",
                                 "null"
-                            ]
+                            ],
+                            "minimum": 0,
+                            "description": "Number of cards drawn as part of the start-of-point cycle (normally 0 or 1)."                            
                         }
                     }
-                }                                   
+                },
+                "staminaRecovery": {
+                    "type": "object",
+                    "properties": {
+                        "recoveryRate": {
+                            "type": "integer",
+                            "description": "This is taken from the player stamina recovery rate modifier. This amount is added to the player stamina up to staminaMax"
+                        },
+                        "previousStamina": {
+                            "type": "integer",
+                            "description": "Stamina before applying recovery."                            
+                        },
+                        "staminaAfter": {
+                            "type": "integer",
+                            "description": "Stamina after applying recovery (capped at maximum)."
+                        }
+                    },
+                    "required": ["recoveryRate","previousStamina","staminaAfter"]                    
+                }
             }
         }
     }

@@ -57,10 +57,13 @@
                 "agility": {
                     "type": "integer"
                 },
-                "stamina": {
+                "mental": {
                     "type": "integer"
                 },
-                "sp": {
+                "staminaMax": {
+                    "type": "integer"
+                },
+                "spMax": {
                     "type": "integer"
                 }
             },
@@ -69,8 +72,9 @@
                 "forehand",
                 "backhand",
                 "agility",
-                "stamina",
-                "sp"
+                "mental",
+                "staminaMax",
+                "spMax"
             ]
         },
         "currentStats": {
@@ -92,15 +96,27 @@
             "type": "object",
             "properties": {
                 "pressure": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Pressure can be attributed from other player active effects and have an impact how the player RSQ is calculated"
                 },
                 "adrenaline": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Adrenaline will add or substract in full to RSQ, can make ball striking more powerful but might also have umpredictable effects"
+                },
+                "staminaRecoveryRate": {
+                    "type": "integer",
+                    "description": "How much stamina will be recovered between games"
+                },
+                "absorb": {
+                    "type": "integer",
+                    "description": "Absorb points are used at antecipation phase to absorb the opponent SP"
                 }
             },
             "required": [
                 "pressure",
-                "adrenaline"
+                "adrenaline",
+                "staminaRecoveryRate",
+                "absorb"
             ]
         },
         "effects": {
@@ -113,57 +129,93 @@
             "type": "object",
             "properties": {
                 "Racquet": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Shoes": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Wristband": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Visor": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Shirt": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Shorts": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Headband": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Socks": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 },
                 "Overgrip": {
-                    "type": [
-                        "string",
-                        "null"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/equipmentCard"
+                        }
                     ]
                 }
             },
@@ -200,12 +252,18 @@
             }
         },
         "lastTurnShotCard": {
-            "type": "string"
+            "oneOf": [
+                {
+                    "type": "null"
+                },
+                {
+                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
+                }
+            ]
         }
     },
     "required": [
         "name",
-        "playerCardId",
         "baseStats",
         "effectiveStats",
         "currentStats",
