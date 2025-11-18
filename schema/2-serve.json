@@ -84,7 +84,7 @@
                             "type": "object",
                             "properties": {
                                 "total": {
-                                    "type": "number"
+                                    "type": "integer"
                                 },
                                 "effects": {
                                     "type": "array",
@@ -95,21 +95,54 @@
                             },
                             "required": ["total"]
                         },
+                        "playerPressureModifier": {
+                            "description": "Player pressure modifier is subtracted from serve score if not disabled",
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether player pressure modifier was disabled by an active momentum action effect"
+                                },                                                                
+                                "amount": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                }
+                            }
+                        },
+                        "adrenalineModifier": {
+                            "description": "Player adrenaline modifier is added or subtracted according player choice",
+                            "type": "object",
+                            "properties": {
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Wether adrenaline modifier was disabled by an active momentum action effect"
+                                },                                                                
+                                "decision": {
+                                    "type": "string",
+                                    "description": "Decide wether adrenaline should be add or subtracted when calculating Base RSQ.",
+                                    "enum": ["add", "subtract"]
+                                },                                
+                                "amount": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                }
+                            }
+                        },                        
                         "mentalAdjustment": {
                             "description": "Mental adjustement are applied after any bonuses",
                             "type": "integer"
                         },
                         "finalScore": {
-                            "description": "The final serve score",
-                            "type": "object",
+                            "description": "The final serve score. When the server player is serving a second serve, the second serve module 12 rule applies:  Mod (12 − (Serve Total − 12)) ",
+                            "type": "object",                            
                             "properties": {
                                 "secondServeModule12Rule": {
-                                    "description": "In second serves the second serve module 12 rule must be applied: Mod (12 − (Serve Total − 12)).",
+                                    "description": "Did the server player hit a second serve (missed the first serve)?",
                                     "type":"boolean"
                                 },
                                 "value": {
                                     "description": "Final calculated score value after summing base serve with serve skill, bonuses, mental adjustement and applying the second serve module 12 rule, when a second serve",
-                                    "type":"number"
+                                    "type":"integer"
                                 }
                             },
                             "required": ["secondServeModule12Rule", "value"]
@@ -118,7 +151,7 @@
                     "required": [
                         "base",
                         "serve",
-                        "bonuses",
+                        "bonus",
                         "mentalAdjustement",
                         "finalScore"
                     ]
@@ -156,7 +189,7 @@
                             "type": "integer"
                         }
                     },
-                    "required": ["decision", "cost"]
+                    "required": ["decision", "staminaSpent"]
                 }
             }
         }

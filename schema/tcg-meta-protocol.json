@@ -1,0 +1,620 @@
+{
+  "$id": "https://tennistcg.io/schema/tcg-meta-protocol.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tennis TCG Meta Protocol",
+  "description": "Meta-protocol wrapper that defines per-message sender role and declares the expected next message (phase and role).",
+
+  "type": "object",
+
+  "properties": {
+    "matchId": {
+      "type": "string",
+      "description": "Unique match identifier."
+    },
+
+    "version": {
+      "type": "string",
+      "description": "Meta-protocol version (for compatibility)."
+    },
+
+    "log": {
+      "type": "array",
+      "description": "Ordered list of all protocol messages exchanged so far in this match.",
+      "items": {
+        "$ref": "#/$defs/protocolMessage"
+      }
+    }
+  },
+
+  "required": ["matchId", "version", "log"],
+
+  "$defs": {
+
+    "nextMessageHint": {
+      "type": "object",
+      "description": "The sender's declaration of what the next message in the sequence must be, and which role must send it.",
+      "required": ["phaseType", "role"],
+      "properties": {
+        "phaseType": {
+          "type": "string",
+          "enum": [
+            "start-match",
+            "start-game",
+            "changeover",
+            "start-point",
+            "serve",
+            "anticipate",
+            "shot-selection",
+            "prepare-shot-direction",
+            "prepare-shot-direction-challenge",
+            "prepare-shot-direction-resolve",
+            "prepare-shot-stamina",
+            "play-momentum-card",
+            "execute-shot",
+            "resolve-shot-outcome",
+            "end-of-point"
+          ]
+        },
+        "role": {
+          "type": "string",
+          "enum": ["hittingPlayer", "waitingPlayer", "neutral"],
+          "description": "The logical role that must send the next message. 'neutral' for phases like changeover / end-of-point."
+        }
+      }
+    },
+
+    "protocolMessage": {
+      "type": "object",
+      "description": "A single message in the match log, wrapping a concrete phase payload plus meta-information and a declared next expected message.",
+      "required": [
+        "sequence",
+        "timestamp",
+        "sender",
+        "role",
+        "phaseType",
+        "payload",
+        "next"
+      ],
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Monotonic sequence number for this message within this match. First message is 1."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the message was created (ISO 8601). For logging and debugging; not used for game rules."
+        },
+        "sender": {
+          "type": "string",
+          "enum": ["playerA", "playerB"],
+          "description": "Which player sent this message."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["hittingPlayer", "waitingPlayer", "neutral"],
+          "description": "Logical role of the sender in this phase."
+        },
+        "phaseType": {
+          "type": "string",
+          "description": "The kind of phase payload carried by this message.",
+          "enum": [
+            "start-match",
+            "start-game",
+            "changeover",
+            "start-point",
+            "serve",
+            "anticipate",
+            "shot-selection",
+            "prepare-shot-direction",
+            "prepare-shot-direction-challenge",
+            "prepare-shot-direction-resolve",
+            "prepare-shot-stamina",
+            "play-momentum-card",
+            "execute-shot",
+            "resolve-shot-outcome",
+            "end-of-point"
+          ]
+        },
+        "payload": {
+          "description": "The actual phase message body, conforming to the corresponding phase schema.",
+          "oneOf": [
+            { "$ref": "https://tennistcg.io/schema/0-start-match.json" },
+            { "$ref": "https://tennistcg.io/schema/11-start-of-game.json" },
+            { "$ref": "https://tennistcg.io/schema/10-changeover.json" },
+            { "$ref": "https://tennistcg.io/schema/1-start-of-point.json" },
+            { "$ref": "https://tennistcg.io/schema/2-serve.json" },
+            { "$ref": "https://tennistcg.io/schema/3-anticipate.json" },
+            { "$ref": "https://tennistcg.io/schema/4-shot-selection.json" },
+            { "$ref": "https://tennistcg.io/schema/5a-prepare-shot-direction.json" },
+            { "$ref": "https://tennistcg.io/schema/5a-prepare-shot-direction-challenge.json" },
+            { "$ref": "https://tennistcg.io/schema/5a-prepare-shot-direction-resolve.json" },
+            { "$ref": "https://tennistcg.io/schema/5b-prepare-shot-stamina.json" },
+            { "$ref": "https://tennistcg.io/schema/6-play-momentum-card.json" },
+            { "$ref": "https://tennistcg.io/schema/7-execute-shot.json" },
+            { "$ref": "https://tennistcg.io/schema/8-shot-outcome.json" },
+            { "$ref": "https://tennistcg.io/schema/9-end-of-point.json" }
+          ]
+        },
+        "next": {
+          "$ref": "#/$defs/nextMessageHint"
+        }
+      },
+
+      "allOf": [
+        {
+          "if": { "properties": { "phaseType": { "const": "start-match" } } },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "start-match" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "start-game" } } },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "start-game" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "start-point" } } },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "start-point" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "serve" } } },
+          "then": {
+            "properties": {
+              "role": { "const": "hittingPlayer" },
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "serve" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "anticipate" } } },
+          "then": {
+            "properties": {
+              "role": { "const": "waitingPlayer" },
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "anticipate" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "shot-selection" } } },
+          "then": {
+            "properties": {
+              "role": { "const": "hittingPlayer" },
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "shot-selection" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "changeover" } } },
+          "then": {
+            "properties": {
+              "role": { "const": "neutral" },
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "changeover" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "end-of-point" } } },
+          "then": {
+            "properties": {
+              "role": { "const": "neutral" },
+              "payload": {
+                "properties": {
+                  "phase": {
+                    "properties": { "type": { "const": "end-of-point" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "start-match" } } },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "start-game" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "start-game" } } },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "start-point" },
+                  "role": { "const": "neutral" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "start-point" } } },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": {
+                    "enum": [ "start-point", "serve" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "serve" } } },
+          "then": {
+            "oneOf": [
+              {
+                "description": "Valid serve → rally begins, next is anticipate by waiting player.",
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "outcome": { "const": "valid" }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": { "const": "anticipate" },
+                      "role": { "const": "waitingPlayer" }
+                    }
+                  }
+                }
+              },
+              {
+                "description": "Ace or double fault → point ends, next is end-of-point.",
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "outcome": {
+                            "enum": [ "ace", "doubleFault" ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": { "const": "end-of-point" },
+                      "role": { "const": "neutral" }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "anticipate" } } },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "shot-selection" },
+                  "role": { "const": "hittingPlayer" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "phaseType": { "const": "shot-selection" } } },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "prepare-shot-direction" },
+                  "role": { "const": "hittingPlayer" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "prepare-shot-direction" } }
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "directionChangeDeclare": {
+                            "properties": {
+                              "declare": { "const": "change" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": { "const": "prepare-shot-direction-challenge" },
+                      "role": { "const": "waitingPlayer" }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "directionChangeDeclare": {
+                            "properties": {
+                              "declare": { "const": "keep" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": { "const": "prepare-shot-stamina" },
+                      "role": { "const": "hittingPlayer" }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "prepare-shot-direction-challenge" } }
+          },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "prepare-shot-direction-resolve" },
+                  "role": { "const": "hittingPlayer" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "prepare-shot-direction-resolve" } }
+          },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "prepare-shot-stamina" },
+                  "role": { "const": "hittingPlayer" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "prepare-shot-stamina" } }
+          },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "play-momentum-card" },
+                  "role": { "const": "hittingPlayer" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "play-momentum-card" } }
+          },
+          "then": {
+            "oneOf": [
+              {
+                "description": "Current player plays a momentum card → priority passes to other role, still play-momentum-card.",
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "decidePlayMomentumCard": { "const": "playMomentumCard" }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": { "const": "play-momentum-card" }
+                    }
+                  }
+                }
+              },
+              {
+                "description": "Current player passes → next is either opponent momentum decision or execute-shot.",
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "decidePlayMomentumCard": { "const": "pass" }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": {
+                        "enum": ["play-momentum-card", "execute-shot"]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "execute-shot" } }
+          },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": { "const": "resolve-shot-outcome" },
+                  "role": { "const": "hittingPlayer" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "resolve-shot-outcome" } }
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "pointDecideOutcome": {
+                            "properties": {
+                              "decidePoint": { "const": "point_continues" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": { "const": "anticipate" },
+                      "role": { "const": "waitingPlayer" }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "payload": {
+                    "properties": {
+                      "phase": {
+                        "properties": {
+                          "pointDecideOutcome": {
+                            "properties": {
+                              "decidePoint": {
+                                "enum": ["winner", "error"]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "next": {
+                    "properties": {
+                      "phaseType": { "const": "end-of-point" },
+                      "role": { "const": "neutral" }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": { "phaseType": { "const": "end-of-point" } }
+          },
+          "then": {
+            "properties": {
+              "next": {
+                "properties": {
+                  "phaseType": {
+                    "enum": ["start-point", "changeover", "start-game"]
+                  },
+                  "role": { "const": "neutral" }
+                }
+              }
+            }
+          }
+        }
+
+      ]
+    }
+
+  }
+}

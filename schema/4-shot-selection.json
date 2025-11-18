@@ -45,6 +45,7 @@
                 },
                 "staminaSpent": {
                     "type": "integer",
+                    "description": "Stamina spent to pay the card’s cost.",
                     "minimum": 0
                 },
                 "spSpent": {

@@ -5,7 +5,6 @@
     "type": "object",
     "required": [
         "environment",
-        "lifecycle",
         "sets",
         "currentGame",
         "serverPlayer",
@@ -17,24 +16,14 @@
         "environment": {
             "type": "object",
             "required": [
-                "courtSpeed"
+                "speedModifier"
             ],
             "properties": {
-                "courtSpeed": {
+                "speedModifier": {
                     "type": "integer",
-                    "description": "The court speed modifier"
+                    "description": "The court speed modifier defined for the surface"
                 }
             }
-        },
-        "lifecycle": {
-            "type": "string",
-            "description": "Identifies the application lifecycle state for this context.",
-            "enum": [
-                "Initial",
-                "Serve",
-                "Rally",
-                "StartOfGame"
-            ]
         },
         "sets": {
             "type": "array",
@@ -68,10 +57,16 @@
             ],
             "properties": {
                 "playerA": {
-                    "type": "string"
+                    "oneOf": [
+                        { "type": "string", "enum": ["0","15","30","40","Ad"] },
+                        { "type": "integer", "minimum": 0 }
+                    ]
                 },
                 "playerB": {
-                    "type": "string"
+                    "oneOf": [
+                        { "type": "string", "enum": ["0","15","30","40","Ad"] },
+                        { "type": "integer", "minimum": 0 }
+                    ]
                 }
             }
         },

@@ -154,7 +154,7 @@
                             }
                         },
                         "playerPressureModifier": {
-                            "description": "Player pressure modifier is added or subtracted according player choice. It will be added as a RSQ component if not disabled",
+                            "description": "Player pressure modifier is subtracted from RSQ score if not disabled",
                             "type": "object",
                             "properties": {
                                 "disabled": {

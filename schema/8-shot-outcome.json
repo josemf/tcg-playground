@@ -94,7 +94,7 @@
                             "type": "object",                   
                             "properties": {
                                 "amount": {
-                                    "description": "How much spend stamina to up move on the court",                            
+                                    "description": "Stamina spent to move position after shot.",                            
                                     "type": "integer",
                                     "minimum": 0
                                 },

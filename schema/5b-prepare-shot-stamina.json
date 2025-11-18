@@ -45,7 +45,7 @@
                     "type": "object",                   
                     "properties": {
                         "amount": {
-                            "description": "How much spend stamina to up RSQ",                            
+                            "description": "Additional stamina invested to increase RSQ.",                            
                             "type": "integer",
                             "minimum": 0
                         },

@@ -60,7 +60,8 @@
                                     "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/courtPosition",
                                     "description": "The player positioning required by the card"
                                 }
-                            }
+                            },
+                            "required": ["sourceCard", "position"]
                         },
                         "action": {
                             "type": "string",
@@ -94,7 +95,7 @@
                 },
                 
                 "calculatedSQ": {
-                    "description": "The rule is to use agility and any spent stamina to calculate incomming SQ",
+                    "description": "The rule is to use agility and any spent stamina to calculate incoming SQ",
                     "type": "object",
                     "properties": {
                         "agility": {
@@ -106,6 +107,7 @@
                         },
                         "staminaSpent": {
                             "type": "integer",
+                            "description": "Stamina spent to reduce incoming SQ.",
                             "minimum": 0
                         },
                         "value": {

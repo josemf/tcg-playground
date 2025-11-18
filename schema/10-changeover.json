@@ -3,6 +3,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "PH1 — Changeover",
     "type": "object",
+    "description": "This message reflects this player’s equipment changes and expired effects at changeover. Both players send a 10-changeover message.",
     "required": [
         "context",
         "players",

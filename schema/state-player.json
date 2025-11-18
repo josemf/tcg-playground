@@ -252,14 +252,7 @@
             }
         },
         "lastTurnShotCard": {
-            "oneOf": [
-                {
-                    "type": "null"
-                },
-                {
-                    "$ref": "https://tennistcg.io/schema/definitions.json#/$defs/shotCard"
-                }
-            ]
+            "type": ["string","null"]
         }
     },
     "required": [

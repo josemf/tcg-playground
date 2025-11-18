@@ -1,9 +1,8 @@
 {
-    "$id": "https://tennistcg.io/schema/1-start-of-point.json",
+    "$id": "https://tennistcg.io/schema/11-start-of-game.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "PH1 — Start of Point",
+    "title": "PH1 — Start of Game",
     "type": "object",
-    "description": "This message reflects this player’s stamina recovery at start of point. Both players send a 1-start-of-point message in sequence, as defined by the meta‑protocol.",
     "required": [
         "context",
         "players",
@@ -32,6 +31,7 @@
             "type": "object",
             "required": [
                 "type",
+                "cardCycle",
                 "staminaRecovery"
             ],
             "properties": {
@@ -39,13 +39,37 @@
                     "type": "string",
                     "const": "start-point"
                 },
+                "cardCycle": {
+                    "type": "object",
+                    "required": [
+                        "cycled",
+                        "discarded",
+                        "drawn"
+                    ],
+                    "properties": {
+                        "cycled": {
+                            "type": "boolean"
+                        },
+                        "discarded": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "description": "Name/id of the card discarded from hand when cycling; null if no cycle."                            
+                        },
+                        "drawn": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "description": "Name/id of the drawn card"
+                        }
+                    }
+                },
                 "staminaRecovery": {
                     "type": "object",
+                    "description": "Replenishes stamina to max stamina",
                     "properties": {
-                        "recoveryRate": {
-                            "type": "integer",
-                            "description": "This is taken from the player stamina recovery rate modifier. This amount is added to the player stamina up to staminaMax"
-                        },
                         "previousStamina": {
                             "type": "integer",
                             "description": "Stamina before applying recovery."                            
